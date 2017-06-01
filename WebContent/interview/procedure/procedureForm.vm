@@ -1,0 +1,214 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="../../static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="../../lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/css/style.css" />
+<link rel="stylesheet" type="text/css" href="../../static/login/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/icheck/square/blue.css">
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>问题详情 - 面试助手 v1.0</title>
+</head>
+<body>
+<article class="page-container">
+<form class="form form-horizontal" id="form-procedureForm" action="procedureForm.htm" method="post">
+    <input type="hidden" name="interviewId" id="interviewId" value="${interviewId}">
+    <input type="hidden" name="questionId" id="questionId" value="${question.questionId}">
+    <input type="hidden" name="questionFaceWay" id="questionFaceWay" value="${interviewWay}">
+    <input type="hidden" name="questionType" id="questionType" value="${question.questionType}">
+    <input type="hidden" name="oldQuestionType" id="oldQuestionType" value="0">
+    <input type="hidden" name="isNewQuestionType" id="isNewQuestionType" value="true">
+    <div class="row cl">
+        <label class="form-label col-xs-2 col-sm-2">问题详情：</label>
+        <div class="formControls col-xs-9 col-sm-9">
+            <textarea class="textarea form-control" rows="2" readonly placeholder="无" id="questionQuestion" name="questionQuestion">$!{question.questionQuestion}</textarea>
+        </div>
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-2 col-sm-2">参考答案：</label>
+        <div class="formControls col-xs-9 col-sm-9">
+            <textarea class="textarea form-control" rows="3" readonly placeholder="无" id="questionAnswers" name="questionAnswers">$!{question.questionAnswers}</textarea>
+        </div>
+    </div>
+    #if("$!{dictionaryType}"!="1")
+    <div class="row cl">
+        <label class="form-label col-xs-2 col-sm-2">掌握情况：</label>
+        <div class="formControls col-xs-9 col-sm-9">
+            <div class="skin-minimal">
+                <div class="radio-box">
+                    <input type="radio" id="addQuestionfaceWay1" value="1" name="idUnderstanding">
+                    <label for="addQuestionfaceWay1" style="cursor:pointer;">不了解</label>
+                </div>
+                <div class="radio-box">
+                    <input type="radio" id="addQuestionfaceWay2" value="2" name="idUnderstanding">
+                    <label for="addQuestionfaceWay2" style="cursor:pointer;">掌握程度一般</label>
+                </div>
+                <div class="radio-box">
+                    <input type="radio" id="addQuestionfaceWay3" value="3" name="idUnderstanding">
+                    <label for="addQuestionfaceWay3" style="cursor:pointer;">掌握程度全面</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    #end
+    <div class="row cl">
+        <label class="form-label col-xs-2 col-sm-2">备注：</label>
+        <div class="formControls col-xs-9 col-sm-9">
+            <textarea class="textarea form-control" rows="3" placeholder="备注" id="idRemark" name="idRemark"></textarea>
+        </div>
+    </div>
+    <div class="row cl">
+        <div class="col-xs-2 col-sm-2 col-xs-offset-4 col-sm-offset-4">
+            <input class="btn btn-secondary radius text-l" type="button" onclick="nextQuestion()" value="&nbsp;&nbsp;跳过此题&nbsp;&nbsp;">
+        </div>
+        <div class="col-xs-2 col-sm-2">
+            <input class="btn btn-success radius text-r" type="submit" value="&nbsp;&nbsp;下一问题&nbsp;&nbsp;">
+        </div>
+    </div>
+</form>
+</article>
+
+<!--_footer 作为公共模版分离出去--> 
+<script type="text/javascript" src="../../lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="../../lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="../../static/h-ui/js/H-ui.min.js"></script> 
+<script type="text/javascript" src="../../static/h-ui.admin/js/H-ui.admin.js"></script>
+<!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="../../lib/jquery.validation/1.14.0/jquery.validate.js"></script> 
+<script type="text/javascript" src="../../lib/jquery.validation/1.14.0/validate-methods.js"></script> 
+<script type="text/javascript" src="../../lib/jquery.validation/1.14.0/messages_zh.js"></script> 
+<script type="text/javascript" src="../../lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        radioClass: 'iradio_square-blue',
+        increaseArea: '20%'
+    });
+	
+	if("$!{code}"=="2"){
+        layer.alert('$!{codeDes}', {icon: 2,title :'警告',closeBtn: 0},function(index){
+              layer.close(index);
+              history.back(-1);
+        });             
+    }
+	if("$!{code}"=="3"){
+		parent.finish(-1);             
+    }
+	$("#form-procedureForm").validate({
+		#if("$!{dictionaryType}"=="1")
+        rules:{
+            idRemark:{
+                required:true,
+            }
+        },
+        #end
+        onkeyup:false,
+        focusCleanup:true,
+        success:"valid",
+        submitHandler:function(form){
+            if("$!{dictionaryType}"!="1" && $("input[name='idUnderstanding']:checked").length!=1){
+                layer.msg("请选择掌握情况", {icon: 5,time: 1000});
+                return;
+            }
+            setQuestionProp(false);
+            form.submit();
+        }
+    });
+	
+	var nTrs = parent.oTable.fnGetNodes();
+    for(var i = 0; i < nTrs.length; i++){
+        var rowData=parent.oTable.fnGetData(nTrs[i]);
+        if(rowData[2]==${questionType}){
+        	parent.oTable.fnUpdate(${num},i,1);
+        	parent.oTable.fnUpdate(${typeSum},i,3);
+        	break;
+        }
+    }
+    var titleValue=$(window.parent.document).find("#min_title_list").find("li").find("span");
+    titleValue.html("$!{dictionaryName}");
+    titleValue.attr("title","$!{dictionaryName}");
+});
+
+function nextQuestion(){
+	var nowRows = setQuestionProp(true);
+	if(nowRows.lastOne){
+		layer.msg("这是最后一道题了", {icon: 5,time: 2000});
+		return;
+	}
+	var questionType=$("input[id='questionType']").val();
+    var oldQuestionType=$("input[id='oldQuestionType']").val();
+    var questionId=$("input[id='questionId']").val();
+    parent.oTable.fnUpdate(nowRows.sum+1,nowRows.rows,4);
+	location.replace(location.pathname+'?questionFaceWay=$!{interviewWay}&interviewId=$!{interviewId}&questionId='+questionId+'&oldQuestionType='+oldQuestionType+'&questionType='+questionType);
+}
+function setQuestionProp(isJump){
+	var nTrs = parent.oTable.fnGetNodes();
+    var oldQuestionType = 0;
+    var questionType = 0;
+    var nowRows = {};
+    for(var i = 0; i < nTrs.length; i++){
+        var rowData=parent.oTable.fnGetData(nTrs[i]);
+        if(rowData[2]==$question.questionType){
+        	nowRows.rows = i;
+        	nowRows.sum = parseInt(rowData[4]);
+        	if(parseInt(rowData[1]) + parseInt(rowData[4]) + 1 >= parseInt(rowData[3])){
+                oldQuestionType = $question.questionType;
+                continue;                   
+            }else{
+                break;
+            }
+        }
+        if(oldQuestionType != 0){
+            if(parseInt(rowData[1]) < parseInt(rowData[3])){
+                questionType = rowData[2];
+                break;
+            }
+        }
+    }
+    if(oldQuestionType !=0 && questionType == 0){
+        for(var i = 0; i < nTrs.length; i++){
+            var rowData=parent.oTable.fnGetData(nTrs[i]);
+            if(rowData[2]==$question.questionType){
+                break;
+            }
+            if(parseInt(rowData[1]) < parseInt(rowData[3])){
+                questionType = rowData[2];
+                break;
+            }
+        }
+    }
+    $("input[id='oldQuestionType']").val(oldQuestionType);
+    if(oldQuestionType !=0 && questionType !=0 ){
+        $("input[id='questionType']").val(questionType);
+        if(isJump){
+            $("input[id='questionId']").val(0);
+        }
+    }
+    if(oldQuestionType !=0 && isJump){
+    	nowRows.lastOne = true;
+    }else{
+    	nowRows.lastOne = false;
+    }
+    return nowRows;
+}
+</script> 
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

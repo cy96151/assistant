@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="indi.graduate.assistant.dao.QuestionBeanMapper">
+	<resultMap id="BaseResultMap" type="indi.graduate.assistant.model.QuestionBean">
+		<id column="question_id" property="questionId" jdbcType="INTEGER" />
+		<result column="question_type" property="questionType"
+			jdbcType="INTEGER" />
+		<result column="question_difficulty" property="questionDifficulty"
+			jdbcType="INTEGER" />
+		<result column="question_face_way" property="questionFaceWay"
+			jdbcType="INTEGER" />
+	</resultMap>
+	<resultMap id="ResultMapWithBLOBs"
+		type="indi.graduate.assistant.model.QuestionBeanWithBLOBs" extends="BaseResultMap">
+		<result column="question_topic" property="questionTopic"
+			jdbcType="LONGVARCHAR" />
+		<result column="question_answers" property="questionAnswers"
+			jdbcType="LONGVARCHAR" />
+		<result column="question_question" property="questionQuestion"
+			jdbcType="LONGVARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		question_id, question_type, question_difficulty,
+		question_face_way
+	</sql>
+	<sql id="Blob_Column_List">
+		question_topic, question_answers, question_question
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from question
+		where question_id = #{questionId,jdbcType=INTEGER}
+	</select>
+	<select id="selectQuestionCount" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM question t
+		UNION ALL
+		SELECT COUNT(*) FROM question t WHERE to_days(t.question_addtime) =
+		to_days(now())
+		UNION ALL
+		SELECT COUNT(*) FROM question t WHERE TO_DAYS( NOW() ) - TO_DAYS(
+		t.question_addtime) = 1
+		UNION ALL
+		SELECT COUNT(*) FROM question t WHERE YEARWEEK(t.question_addtime) =
+		YEARWEEK(now())
+		UNION ALL
+		SELECT COUNT(*) FROM question t WHERE
+		date_format(t.question_addtime,'%Y-%m') = date_format(now(),'%Y-%m')
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		question
+		where question_id = #{questionId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="indi.graduate.assistant.model.QuestionBeanWithBLOBs">
+		insert into question
+		(question_id, question_type, question_difficulty,
+		question_face_way,
+		question_topic, question_answers, question_question
+		)
+		values
+		(#{questionId,jdbcType=INTEGER}, #{questionType,jdbcType=INTEGER},
+		#{questionDifficulty,jdbcType=INTEGER},
+		#{questionFaceWay,jdbcType=INTEGER},
+		#{questionTopic,jdbcType=LONGVARCHAR},
+		#{questionAnswers,jdbcType=LONGVARCHAR},
+		#{questionQuestion,jdbcType=LONGVARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="indi.graduate.assistant.model.QuestionBeanWithBLOBs">
+		insert into question
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="questionId != null">
+				question_id,
+			</if>
+			<if test="questionType != null">
+				question_type,
+			</if>
+			<if test="questionDifficulty != null">
+				question_difficulty,
+			</if>
+			<if test="questionFaceWay != null">
+				question_face_way,
+			</if>
+			<if test="questionTopic != null">
+				question_topic,
+			</if>
+			<if test="questionAnswers != null">
+				question_answers,
+			</if>
+			<if test="questionQuestion != null">
+				question_question,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="questionId != null">
+				#{questionId,jdbcType=INTEGER},
+			</if>
+			<if test="questionType != null">
+				#{questionType,jdbcType=INTEGER},
+			</if>
+			<if test="questionDifficulty != null">
+				#{questionDifficulty,jdbcType=INTEGER},
+			</if>
+			<if test="questionFaceWay != null">
+				#{questionFaceWay,jdbcType=INTEGER},
+			</if>
+			<if test="questionTopic != null">
+				#{questionTopic,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="questionAnswers != null">
+				#{questionAnswers,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="questionQuestion != null">
+				#{questionQuestion,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeyWithBLOBs" parameterType="indi.graduate.assistant.model.QuestionBeanWithBLOBs">
+		update
+		question
+		set question_type = #{questionType,jdbcType=INTEGER},
+		question_difficulty = #{questionDifficulty,jdbcType=INTEGER},
+		question_face_way = #{questionFaceWay,jdbcType=INTEGER},
+		question_topic = #{questionTopic,jdbcType=LONGVARCHAR},
+		question_answers = #{questionAnswers,jdbcType=LONGVARCHAR},
+		question_question = #{questionQuestion,jdbcType=LONGVARCHAR}
+		where
+		question_id = #{questionId,jdbcType=INTEGER}
+	</update>
+
+	<!-- 获取不同类型试题 -->
+	<select id="selectQuestionType" parameterType="Map"
+		resultMap="ResultMapWithBLOBs">
+		select question_id, question_type, question_difficulty,
+		question_face_way,
+		question_topic, question_answers, question_question
+		from question where question_type = #{questionType}
+	</select>
+	<!-- 搜索列表获取试题 -->
+	<select id="selectQuestionList" parameterType="Map"
+		resultMap="ResultMapWithBLOBs">
+		select question_id, question_type, question_difficulty,
+		question_face_way,
+		question_topic, question_answers, question_question
+		from question WHERE 1=1
+		<if test="questionType != null">
+			AND question_type
+			=#{questionType,jdbcType=INTEGER}
+		</if>
+		ORDER BY(question_id)ASC limit #{pageNo},#{pageSize}
+	</select>
+	<select id="selectQuestionNum" parameterType="Map" resultType="int">
+		SELECT COUNT(*) FROM question t 
+		LEFT JOIN interview t2 ON t2.interview_id = #{interviewId,jdbcType=INTEGER} 
+		WHERE 
+		t.question_type = #{questionType,jdbcType=INTEGER} 
+		AND CHAR_LENGTH(t.question_face_way) >= t2.interview_way 
+        AND SUBSTRING(t.question_face_way,CHAR_LENGTH(t.question_face_way)-t2.interview_way+1,1)='1'
+	</select>
+</mapper>

@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="indi.graduate.assistant.dao.InterviewBeanMapper">
+	<resultMap id="BaseResultMap" type="indi.graduate.assistant.model.InterviewBean">
+		<id column="interview_id" property="interviewId" jdbcType="INTEGER" />
+		<result column="interviewee_id" property="intervieweeId"
+			jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="VARCHAR" />
+		<result column="interview_time" property="interviewTime"
+			jdbcType="TIMESTAMP" />
+		<result column="interview_location" property="interviewLocation"
+			jdbcType="VARCHAR" />
+		<result column="interview_way" property="interviewWay"
+			jdbcType="INTEGER" />
+		<result column="interview_type" property="interviewType"
+			jdbcType="INTEGER" />
+		<result column="interview_skill_level" property="interviewSkillLevel"
+			jdbcType="INTEGER" />
+		<result column="interview_score" property="interviewScore"
+			jdbcType="INTEGER" />
+	</resultMap>
+	<resultMap id="ResultMapWithBLOBs" type="indi.graduate.assistant.model.InterviewBean"
+		extends="BaseResultMap">
+		<result column="interview_evaluate" property="interviewEvaluate"
+			jdbcType="LONGVARCHAR" />
+		<result column="interview_end" property="interviewEnd"
+			jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Base_Column_List"> interview_id, interviewee_id, user_id,
+		interview_time,
+		interview_location, interview_way,
+		interview_type,
+		interview_skill_level, interview_score
+	</sql>
+	<sql id="Blob_Column_List">
+		interview_evaluate,interview_end
+	</sql>
+	<select id="selectInterviewCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM interview t
+        UNION ALL
+        SELECT COUNT(*) FROM interview t WHERE to_days(t.interview_time) =
+        to_days(now())
+        UNION ALL
+        SELECT COUNT(*) FROM interview t WHERE TO_DAYS( NOW() ) - TO_DAYS(
+        t.interview_time) = 1
+        UNION ALL
+        SELECT COUNT(*) FROM interview t WHERE YEARWEEK(t.interview_time) =
+        YEARWEEK(now())
+        UNION ALL
+        SELECT COUNT(*) FROM interview t WHERE date_format(t.interview_time,'%Y-%m')
+        = date_format(now(),'%Y-%m')
+    </select>
+	<select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from interview
+		where interview_id = #{interviewId,jdbcType=INTEGER}
+	</select>
+	<insert id="insertSelective" parameterType="indi.graduate.assistant.model.InterviewBean">
+		insert into interview
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="interviewId != null">
+				interview_id,
+			</if>
+			<if test="intervieweeId != null">
+				interviewee_id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="interviewTime != null">
+				interview_time,
+			</if>
+			<if test="interviewLocation != null">
+				interview_location,
+			</if>
+			<if test="interviewWay != null">
+				interview_way,
+			</if>
+			<if test="interviewType != null">
+				interview_type,
+			</if>
+			<if test="interviewSkillLevel != null">
+				interview_skill_level,
+			</if>
+			<if test="interviewScore != null">
+				interview_score,
+			</if>
+			<if test="interviewEvaluate != null">
+				interview_evaluate,
+			</if>
+			<if test="interviewEnd != null">
+				interview_end,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="interviewId != null">
+				#{interviewId,jdbcType=INTEGER},
+			</if>
+			<if test="intervieweeId != null">
+				#{intervieweeId,jdbcType=INTEGER},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="interviewTime != null">
+				#{interviewTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="interviewLocation != null">
+				#{interviewLocation,jdbcType=VARCHAR},
+			</if>
+			<if test="interviewWay != null">
+				#{interviewWay,jdbcType=INTEGER},
+			</if>
+			<if test="interviewType != null">
+				#{interviewType,jdbcType=INTEGER},
+			</if>
+			<if test="interviewSkillLevel != null">
+				#{interviewSkillLevel,jdbcType=INTEGER},
+			</if>
+			<if test="interviewScore != null">
+				#{interviewScore,jdbcType=INTEGER},
+			</if>
+			<if test="interviewEvaluate != null">
+				#{interviewEvaluate,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="interviewEnd != null">
+				#{interviewEnd,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="indi.graduate.assistant.model.InterviewBean">
+		update interview
+		<set>
+			<if test="intervieweeId != null">
+				interviewee_id = #{intervieweeId,jdbcType=INTEGER},
+			</if>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="interviewTime != null">
+				interview_time = #{interviewTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="interviewLocation != null">
+				interview_location =
+				#{interviewLocation,jdbcType=VARCHAR},
+			</if>
+			<choose>
+			<when test="interviewWay != null">
+				interview_way = #{interviewWay,jdbcType=INTEGER},
+			</when>
+			<otherwise>
+			    interview_way = null,
+			</otherwise>
+			</choose>
+			<if test="interviewType != null">
+				interview_type = #{interviewType,jdbcType=INTEGER},
+			</if>
+			<if test="interviewSkillLevel != null">
+				interview_skill_level =
+				#{interviewSkillLevel,jdbcType=INTEGER},
+			</if>
+			<if test="interviewScore != null">
+				interview_score = #{interviewScore,jdbcType=INTEGER},
+			</if>
+			<if test="interviewEvaluate != null">
+				interview_evaluate =
+				#{interviewEvaluate,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="interviewEnd != null">
+				interview_end =
+				#{interviewEnd,jdbcType=INTEGER},
+			</if>
+		</set>
+		where interview_id = #{interviewId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="indi.graduate.assistant.model.InterviewBean">
+		update interview
+		set interviewee_id = #{intervieweeId,jdbcType=INTEGER},
+		user_id =
+		#{userId,jdbcType=VARCHAR},
+		interview_time =
+		#{interviewTime,jdbcType=TIMESTAMP},
+		interview_location =
+		#{interviewLocation,jdbcType=VARCHAR},
+		interview_way =
+		#{interviewWay,jdbcType=INTEGER},
+		interview_type =
+		#{interviewType,jdbcType=INTEGER},
+		interview_skill_level =
+		#{interviewSkillLevel,jdbcType=INTEGER},
+		interview_score =
+		#{interviewScore,jdbcType=INTEGER},
+		interview_evaluate =
+		#{interviewEvaluate,jdbcType=LONGVARCHAR}
+		interview_end =
+		#{interviewEnd,jdbcType=INTEGER}
+		where interview_id =
+		#{interviewId,jdbcType=INTEGER}
+	</update>
+	<resultMap id="IsStartUpInterview"
+		type="indi.graduate.assistant.dto.IsStartUpInterviewDto">
+		<id column="interview_id" property="interviewId" jdbcType="INTEGER" />
+		<result column="interviewee_id" property="intervieweeId"
+			jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="VARCHAR" />
+		<result column="interview_time" property="interviewTime"
+			jdbcType="TIMESTAMP" />
+		<result column="interview_location" property="interviewLocation"
+			jdbcType="VARCHAR" />
+		<result column="interview_way" property="interviewWay"
+			jdbcType="INTEGER" />
+		<result column="interview_type" property="interviewType"
+			jdbcType="INTEGER" />
+		<result column="interview_skill_level" property="interviewSkillLevel"
+			jdbcType="INTEGER" />
+		<result column="interview_score" property="interviewScore"
+			jdbcType="INTEGER" />
+		<result column="interview_evaluate" property="interviewEvaluate"
+			jdbcType="LONGVARCHAR" />
+		<result column="interviewee_name" property="intervieweeName"
+			jdbcType="VARCHAR" />
+		<result column="interviewee_sex" property="intervieweeSex"
+			jdbcType="INTEGER" />
+		<result column="interviewee_phone" property="intervieweePhone"
+			jdbcType="INTEGER" />
+		<result column="interviewee_status" property="intervieweeStatus"
+			jdbcType="VARCHAR" />
+		<result column="Interviewee_num" property="IntervieweeNum"
+			jdbcType="INTEGER" />
+		<result column="interviewee_school" property="intervieweeSchool"
+			jdbcType="VARCHAR" />
+		<result column="Interviewee_graduation_time" property="intervieweeGraduationTime"
+			jdbcType="TIMESTAMP" />
+		<result column="Interviewee_post" property="intervieweePost"
+			jdbcType="VARCHAR" />
+		<result column="Interviewee_project" property="intervieweeProject"
+			jdbcType="VARCHAR" />
+		<result column="Interviewee_pecialties" property="intervieweePecialties"
+			jdbcType="VARCHAR" />
+		<result column="user_name" property="userName" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="interview_interviewee_user">
+		interview_id,interviewee.interviewee_id,user.user_id,interview_time,interview_location,interview_way,interview_type,interview_skill_level,
+		interview_score,interview_evaluate,interviewee_name,interviewee_sex,interviewee_phone,interviewee_status,Interviewee_num,
+		interviewee_school,Interviewee_graduation_time,
+		Interviewee_post,Interviewee_project,Interviewee_pecialties,user_name
+	</sql>
+	<sql id="interview_interviewee">
+		interview_id,interviewee.interviewee_id,interview_time,interview_location,interview_way,interview_type,interview_skill_level,
+		interview_score,interview_evaluate,interviewee_name,interviewee_sex,interviewee_phone,interviewee_status,Interviewee_num,
+		interviewee_school,Interviewee_graduation_time,
+		Interviewee_post,Interviewee_project,Interviewee_pecialties
+	</sql>
+	<!-- 查询面试人信息 -->
+	<select id="selectIsStartUpInterview" parameterType="java.lang.Integer"
+		resultMap="IsStartUpInterview">
+		select
+		<include refid="interview_interviewee" />
+		from interview,interviewee where
+		interview.interview_id = #{id} and
+		interview.interviewee_id =
+		interviewee.interviewee_id;
+	</select>
+	<!-- 查询面试人列表 -->
+	<select id="selectInterviewList" parameterType="Map"
+		resultMap="IsStartUpInterview">
+		select
+		<include refid="interview_interviewee_user" />
+		from interview,interviewee,user where
+		interview.interviewee_id =
+		interviewee.interviewee_id AND
+		`user`.user_id = interview.user_id
+		AND
+		interview.interview_end=1
+		AND interviewee.interviewee_status!=3
+		<if test="intervieweeStatus != null">
+			AND interviewee.interviewee_status
+			=#{intervieweeStatus,jdbcType=INTEGER}
+		</if>
+		<if test="intervieweePhone != null">
+			AND interviewee.interviewee_phone
+			=#{intervieweePhone,jdbcType=INTEGER}
+		</if>
+		<if test="intervieweeName != null">
+			AND interviewee.interviewee_name
+			LIKE "%"#{intervieweeName,jdbcType=INTEGER}"%"
+		</if>
+		ORDER BY(interview_time) ASC LIMIT #{pageNo},#{pageSize};
+	</select>
+	<select id="countAccounts" parameterType="Map" resultType="int">
+		select count(interview_id) from interview,interviewee,user where
+		interview.interviewee_id =
+		interviewee.interviewee_id AND
+		`user`.user_id = interview.user_id
+		AND interview.interview_end=1
+		AND interviewee.interviewee_status!=3
+		<if test="intervieweeStatus != null">
+			AND interviewee.interviewee_status
+			=#{intervieweeStatus,jdbcType=INTEGER}
+		</if>
+		<if test="intervieweePhone != null">
+			AND interviewee.interviewee_phone
+			=#{intervieweePhone,jdbcType=INTEGER}
+		</if>
+		<if test="intervieweeName != null">
+			AND interviewee.interviewee_name
+			=#{intervieweeName,jdbcType=INTEGER}
+		</if>
+	</select>
+
+	<!-- 吴翔新增，改变end状态，新增备注 -->
+	<update id="updateEvaluateByPrimaryKey" parameterType="indi.graduate.assistant.model.InterviewBean">
+		update
+		interview
+		set interview_evaluate = #{interviewEvaluate},
+		interview_end =
+		#{interviewEnd}
+		where interview_id = #{interviewId}
+	</update>
+	<!-- 查询面试人面试列表 -->
+	<select id="intervieeDetailList" parameterType="int"
+		resultMap="IsStartUpInterview">
+		SELECT
+		interview.interview_id,interview.interviewee_id,interview.interview_time,
+		`user`.user_name,interviewee.interviewee_name
+		FROM user,interview,interviewee WHERE `user`.user_id = interview.user_id
+		AND interview.interviewee_id = interviewee.interviewee_id
+		AND interview.interview_end =2
+		AND interviewee.interviewee_id = #{intervieweeId}
+		ORDER BY(interview.interview_time)
+	</select>
+</mapper>

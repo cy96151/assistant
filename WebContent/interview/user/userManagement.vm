@@ -1,0 +1,208 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="../../static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="../../lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>账户管理</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 系统管理<span class="c-gray en">&gt;</span> 账户管理 <a class="btn btn-success radius r btn-refresh" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.pathname+'?pageNo=1&pageSize=100');" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+    <div class="text-c">
+        <input type="text" name="searchText" id="searchText" placeholder=" 用户姓名" style="width:250px" class="input-text" value="$!{searchText}">
+        <button name="" id="" class="btn btn-success" type="submit" onclick="submit()"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+        <button name="" id="" class="btn btn-primary" type="submit" onclick="reset()"><i class="Hui-iconfont">&#xe72a;</i> 重置</button>
+    </div>
+    <div class="cl pd-5 bg-1 bk-gray mt-20"> 
+       <span class="l">
+           <a href="javascript:;" onclick="userManagement_add()" class="btn btn-primary radius">
+               <i class="Hui-iconfont">&#xe600;</i> 新增</a> 
+           <a class="btn btn-danger radius" onclick="userManagement_edit()" href="javascript:;">
+               <i class="Hui-iconfont">&#xe6df;</i> 修改</a>
+           <a class="btn btn-secondary radius" onclick="userManagement_del()" href="javascript:;">
+               <i class="Hui-iconfont">&#xe6e2;</i> 删除</a>
+           <a class="btn btn-warning radius" onclick="userManagement_pwReset()" href="javascript:;">
+               <i class="Hui-iconfont">&#xe634;</i> 重置密码</a>
+       </span> 
+       <span class="r">共有数据：<strong>$!{total}</strong> 条</span> 
+    </div>
+    <div class="mt-20">
+        <table class="table table-border table-bordered table-bg table-hover table-sort" id="gridtable">
+            <thead>
+                <tr class="text-c">
+                    <th><input name="" type="checkbox" value=""></th>
+                    <th>账户编号</th>
+                    <th>账号名</th>
+                    <th>账号类型</th>
+                    <th>用户姓名</th>
+                    <th>联系方式</th>
+                    <th>擅长领域</th>
+                    <th>部门</th>
+                    <th>技术等级</th>
+                    <th>领导项目</th>
+                    <th>兴趣爱好</th>
+                    <th>账号类型value</th>
+                    <th>技术等级value</th>
+                </tr>
+            </thead>
+            <tbody>
+            #foreach( $row in $rows )
+                <tr class="text-c">
+                    <td><input name="table_checkbox" id="checkbox_$!{row.getUserId()}" type="checkbox" value="$!{row.getUserId()}"></td>
+                    <td>$!{row.getUserId()}</td>
+                    <td>$!{row.getUserAccount()}</td>
+                    <td>$!{row.getUserType()}</td>
+                    <td>$!{row.getUserName()}</td>
+                    <td>$!{row.getUserPhone()}</td>
+                    <td>$!{row.getUserTechnology()}</td>
+                    <td>$!{row.getUserDepartment()}</td>
+                    <td>$!{row.getUserGradeTemp()}</td>
+                    <td>$!{row.getUserProject()}</td>
+                    <td>$!{row.getUserHobby()}</td>
+                    <td>$!{row.getUserPower()}</td>
+                    <td>$!{row.getUserGrade()}</td>
+                </tr>
+            #end
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="../../lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="../../lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="../../static/h-ui/js/H-ui.min.js"></script> 
+<script type="text/javascript" src="../../static/h-ui.admin/js/H-ui.admin.js"></script>
+<!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="../../lib/My97DatePicker/4.8/WdatePicker.js"></script> 
+<script type="text/javascript" src="../../lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
+<script type="text/javascript" src="../../lib/laypage/1.2/laypage.js"></script>
+<script type="text/javascript">
+oTable = $('.table-sort').dataTable({
+    "aaSorting": [[ 1, "desc" ]],//默认第几个排序
+    "bStateSave": true,//状态保存
+    "aoColumnDefs": [
+      {"bVisible": false, "aTargets": [1,11,12]}, //控制列的隐藏显示
+      {"orderable":false,"aTargets":[0,2,4,5,6,9,10]}// 制定列不参与排序
+    ]
+});
+
+$("#gridtable tbody tr").click(function(e) {
+    if ($(this).hasClass('row_selected')) {
+        $(this).removeClass('row_selected');
+        var aData = oTable.fnGetData(this);
+        if (null != aData) {
+            $("input[id='checkbox_"+aData[1]+"']").prop("checked",false);
+        }
+    } else {
+        $(this).addClass('row_selected');
+        var aData = oTable.fnGetData(this);
+        if (null != aData) {
+            $("input[id='checkbox_"+aData[1]+"']").prop("checked",true);
+        }
+    }
+});
+
+$("#gridtable tbody tr").dblclick(function() {
+    var aData = oTable.fnGetData(this);
+    if (null != aData) {
+        layer_show('账户修改','userManagement-edit.htm?userIdEdit='+aData[1],'700','370');
+    }
+});
+function submit(){
+	var searchText=$("input[name='searchText']").val();
+    location.replace(location.pathname+'?pageNo=1&pageSize=100&searchText='+searchText);
+}
+
+function reset(){
+	$("input[name='searchText']").val("");
+}
+
+function userManagement_add(){
+    layer_show('账户新增','userManagement-edit.htm','700','410');
+}
+
+function userManagement_edit(){
+    var checkRows = $("input[name='table_checkbox']:checked");
+    if(checkRows.length==1){
+        var userIdEdit=checkRows.val();
+        layer_show('账户修改','userManagement-edit.htm?userIdEdit='+userIdEdit,'700','370');
+    }else{
+        layer.msg("请选择一条信息", {icon: 5,time: 1000});
+    }
+}
+
+function userManagement_del(){
+    var checkRows = $("input[name='table_checkbox']:checked");
+    if(checkRows.length==1){
+        var userIdEdit=checkRows.val();
+        layer.confirm('确认删除账户信息?', {icon: 3, title:'确认删除'}, function(index){
+              layer.close(index);
+              $.post("delAccounts.json",{"userId":userIdEdit},function(result){
+                  if(result.code=="1"){
+                      layer.msg('success!',{icon:6});
+                      location.replace('userManagement.htm?pageNo=1&pageSize=100');
+                  }else{
+                      layer.alert(result.codeDes, {icon: 5});
+                      return;
+                  }
+              },"json");
+        });
+    }else{
+        layer.msg("请选择一条信息", {icon: 5,time: 1000});
+    }
+}
+
+function userManagement_pwReset(){
+	var checkRows = $("input[name='table_checkbox']:checked");
+    if(checkRows.length==1){
+        var userIdEdit=checkRows.val();
+        layer.confirm('确认重置账户密码?', {icon: 3, title:'确认重置'}, function(index){
+              layer.close(index);
+              $.post("resetPass.json",{"userId":userIdEdit},function(result){
+                  if(result.code=="1"){
+                      layer.alert(result.codeDes+'<br>初始密码为: 123456',{icon:6,closeBtn:0,title:'重置成功'},function(index){
+                    	  location.replace('userManagement.htm?pageNo=1&pageSize=100');
+                      });
+                  }else{
+                      layer.alert(result.codeDes, {icon: 5});
+                      return;
+                  }
+              },"json");
+        });
+    }else{
+        layer.msg("请选择一条信息", {icon: 5,time: 1000});
+    }
+}
+
+function getTableContent(primaryKey,j){
+    var nTrs = oTable.fnGetNodes();//fnGetNodes获取表格所有行，nTrs[i]表示第i行tr对象
+    for(var i = 0; i < nTrs.length; i++){
+        var rowData=oTable.fnGetData(nTrs[i]);
+        if(rowData[j]==primaryKey){
+            return rowData;     
+        }
+    }
+    return null;
+}
+</script>
+</body>
+</html>

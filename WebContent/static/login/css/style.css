@@ -1,0 +1,307 @@
+@charset "utf-8";
+html {
+	display: table;
+	height: 100%;
+	width: 100%
+}
+body {
+	display: table-cell;
+	vertical-align: middle;
+	font-family: "微软雅黑";
+    line-height: 1.538462;
+    color: #757575;
+	background: url(../images/bg.jpg) no-repeat;
+	background-size: cover;
+}
+.login {
+	-webkit-animation-duration: 1s;
+	-o-animation-duration: 1s;
+	animation-duration: 1s;
+	-webkit-animation-fill-mode: both;
+	-o-animation-fill-mode: both;
+	animation-fill-mode: both;
+	-webkit-animation-name: fadeInUp;
+	-o-animation-name: fadeInUp;
+	animation-name: fadeInUp;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 360px
+}
+.login-body {
+	padding: 30px
+}
+.login-brand {
+	display: block;
+	margin-bottom: 15px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.login-footer {
+	margin-bottom: 15px;
+	margin-top: 15px;
+	text-align: center;
+	color: #fff;
+}
+.login-footer a {
+    color: #FFF;
+}
+
+
+.md-custom-controls {
+	padding-bottom: 0;
+	padding-top: 0
+}
+.md-form-group {
+    margin-bottom: 20px;
+    padding: 20px 0;
+    position: relative;
+}
+.md-form-group-checkbox {
+    padding: 0 0 15px;
+    position: relative;
+}
+/*checkbox radio*/
+.text-muted {
+    color: #888!important;
+}
+.checkbox-custom, .radio-custom {
+    position: relative;
+}
+.checkbox-custom label, .radio-custom label {
+    padding-left: 30px;
+}
+.checkbox-custom input[type=checkbox], .radio-custom input[type=radio] {
+    display: none
+}
+.checkbox input[type=checkbox], .checkbox-inline input[type=checkbox], .radio input[type=radio], .radio-inline input[type=radio] {
+    margin-top: 6px;
+    margin-left: -22px
+}
+.checkbox-custom .checker, .radio-custom .checker {
+    font-family: 'Glyphicons Halflings';
+    position: absolute;
+    z-index: 9;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    content: "";
+    font-size: 12px;
+    color: #555;
+    left: 0;
+    top: 2px;
+    -webkit-box-shadow: inset 0 0 0 2px rgba(220,220,220,1);
+    -moz-box-shadow: inset 0 0 0 2px rgba(220,220,220,1);
+    box-shadow: inset 0 0 0 2px rgba(220,220,220,1)
+}
+.checkbox-custom .checker:after, .radio-custom .checker:after {
+    position: absolute;
+    z-index: 9;
+    width: 20px;
+    height: 20px;
+    content: "\e013";
+    text-align: center;
+    line-height: 20px;
+    opacity: 0;
+    -webkit-transition: opacity .25s ease-in-out;
+    -moz-transition: opacity .25s ease-in-out;
+    -o-transition: opacity .25s ease-in-out;
+    transition: opacity .25s ease-in-out
+}
+.checkbox-custom input[type=checkbox]:checked+.checker, .radio-custom input[type=radio]:checked+.checker {
+    -webkit-box-shadow: inset 0 0 0 2px rgba(85,85,85,1);
+    -moz-box-shadow: inset 0 0 0 2px rgba(85,85,85,1);
+    box-shadow: inset 0 0 0 2px rgba(85,85,85,1)
+}
+.checkbox-custom input[type=checkbox]:checked+.checker:after, .radio-custom input[type=radio]:checked+.checker:after {
+    opacity: 1
+}
+.md-form-control {
+    background-color: transparent;
+    background-image: none;
+    border-color: #e0e0e0;
+    border-radius: 0;
+    border-style: solid;
+    border-width: 0 0 1px;
+    color: #757575;
+    display: block;
+    font-size: 16px;
+    line-height: 20px;
+    padding: 4px 0;
+    width: 100%;
+}
+.md-form-control:focus {
+	outline: 0
+}
+.md-form-control::-moz-placeholder {
+	color:#757575;
+	opacity:1
+}
+.md-form-control:-ms-input-placeholder {
+	color:#757575
+}
+.md-form-control::-webkit-input-placeholder {
+	color:#757575
+}
+.md-label-floating .md-control-label {
+    -webkit-transition-duration: .2s;
+    -o-transition-duration: .2s;
+    transition-duration: .2s;
+    -webkit-transition-timing-function: cubic-bezier(.4,0,.2,1);
+    -o-transition-timing-function: cubic-bezier(.4,0,.2,1);
+    transition-timing-function: cubic-bezier(.4,0,.2,1);
+}
+.md-label-floating.has-value .md-control-label, .md-label-floating.is-focused .md-control-label {
+	font-size: 12px;
+	top: 4px;
+	visibility: visible
+}
+.md-control-label {
+    bottom: 0;
+    color: #757575;
+    display: block;
+    font-size: 16px;
+    font-weight: 400;
+    left: 0;
+    line-height: 20px;
+    margin-bottom: 0;
+    overflow: hidden;
+    pointer-events: none;
+    position: absolute;
+    top: 24px;
+    white-space: nowrap;
+    width: 100%;
+}
+.md-control-label:after {
+    background-color: #0288d1;
+    bottom: 20px;
+    content: '';
+    height: 2px;
+    left: 45%;
+    position: absolute;
+    -webkit-transition-duration: .2s;
+    -o-transition-duration: .2s;
+    transition-duration: .2s;
+    -webkit-transition-timing-function: cubic-bezier(.4,0,.2,1);
+    -o-transition-timing-function: cubic-bezier(.4,0,.2,1);
+    transition-timing-function: cubic-bezier(.4,0,.2,1);
+    visibility: hidden;
+    width: 10px;
+}
+.md-form-group.is-focused .md-control-label {
+	color: #0288d1
+}
+.md-form-group.is-focused .md-control-label:after {
+	left: 0;
+	visibility: visible;
+	width: 100%
+}
+.md-form-group.has-success .md-form-control {
+	border-color: #43a047;
+	-webkit-box-shadow: none;
+	box-shadow: none
+}
+.md-form-group.has-success .md-control-label, .md-form-group.has-success .md-help-block {
+	color: #43a047
+}
+.md-form-group.has-success .md-control-label:after {
+	background-color: #43a047
+}
+.md-form-group.has-error .md-form-control {
+	border-color: #d50000;
+	-webkit-box-shadow: none;
+	box-shadow: none
+}
+.md-form-group.has-error .md-control-label, .md-form-group.has-error .md-help-block {
+	color: #d50000
+}
+.md-form-group.has-error .md-control-label:after {
+	background-color: #d50000
+}
+span.md-help-block {
+	display: block;
+	margin-top: 3px;
+	position: absolute;
+	visibility: visible;
+	width: 100%
+}
+.custom-control {
+    cursor: pointer;
+    font-weight: 400;
+    line-height: 14px;
+    margin-bottom: 0;
+    min-height: 14px;
+    min-width: 14px;
+    position: relative;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+}
+.btn {
+    background-position: 50%;
+    -webkit-background-size: 200% 200%;
+    background-size: 200% 200%;
+    -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+    text-transform: uppercase;
+    -webkit-transition: all .3s;
+    -o-transition: all .3s;
+    transition: all .3s;
+	border-radius: 0;
+}
+
+@media (min-width:768px) {
+.login-body {
+	background-color: rgba(255,255,255,.2);
+	border-radius: 0;
+	-webkit-box-shadow: 0 0 1px 1px rgba(0,0,0,.1);
+	box-shadow: 0 0 1px 1px rgba(0,0,0,.1);
+	margin-bottom: 15px;
+	margin-top: 15px
+}
+}
+/*动画效果*/
+@-webkit-keyframes fadeInUp {
+0% {
+opacity:0;
+-webkit-transform:translateY(20px);
+transform:translateY(20px)
+}
+100% {
+opacity:1;
+-webkit-transform:translateY(0);
+transform:translateY(0)
+}
+}
+@-o-keyframes fadeInUp {
+0% {
+opacity:0;
+-webkit-transform:translateY(20px);
+-ms-transform:translateY(20px);
+-o-transform:translateY(20px);
+transform:translateY(20px)
+}
+100% {
+opacity:1;
+-webkit-transform:translateY(0);
+-ms-transform:translateY(0);
+-o-transform:translateY(0);
+transform:translateY(0)
+}
+}
+@keyframes fadeInUp {
+0% {
+opacity:0;
+-webkit-transform:translateY(20px);
+-ms-transform:translateY(20px);
+-o-transform:translateY(20px);
+transform:translateY(20px)
+}
+100% {
+opacity:1;
+-webkit-transform:translateY(0);
+-ms-transform:translateY(0);
+-o-transform:translateY(0);
+transform:translateY(0)
+}
+}

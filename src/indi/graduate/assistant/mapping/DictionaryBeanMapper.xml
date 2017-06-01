@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="indi.graduate.assistant.dao.DictionaryBeanMapper" >
+  <resultMap id="BaseResultMap" type="indi.graduate.assistant.model.DictionaryBean" >
+    <id column="dictionary_id" property="dictionaryId" jdbcType="INTEGER" />
+    <result column="dictionary_name" property="dictionaryName" jdbcType="VARCHAR" />
+    <result column="dictionary_pnode" property="dictionaryPnode" jdbcType="INTEGER" />
+    <result column="dictionary_level" property="dictionaryLevel" jdbcType="INTEGER" />
+  	 <result column="dictionary_type" property="dictionaryType" jdbcType="VARCHAR" />
+  	
+  </resultMap>
+  <sql id="Base_Column_List" >
+    dictionary_id, dictionary_name, dictionary_pnode, dictionary_level,dictionary_type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from dictionary
+    where dictionary_id = #{dictionaryId,jdbcType=INTEGER}
+  </select>
+  <insert id="insertSelective" parameterType="indi.graduate.assistant.model.DictionaryBean" >
+    insert into dictionary
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="dictionaryId != null" >
+        dictionary_id,
+      </if>
+      <if test="dictionaryName != null" >
+        dictionary_name,
+      </if>
+      <if test="dictionaryPnode != null" >
+        dictionary_pnode,
+      </if>
+      <if test="dictionaryLevel != null" >
+        dictionary_level,
+      </if>
+      <if test="dictionaryType != null" >
+        dictionary_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="dictionaryId != null" >
+        #{dictionaryId,jdbcType=INTEGER},
+      </if>
+      <if test="dictionaryName != null" >
+        #{dictionaryName,jdbcType=VARCHAR},
+      </if>
+      <if test="dictionaryPnode != null" >
+        #{dictionaryPnode,jdbcType=VARCHAR},
+      </if>
+      <if test="dictionaryLevel != null" >
+        #{dictionaryLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="dictionaryType != null" >
+        #{dictionaryType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  <select id="rootTypeShow" parameterType="Map"  resultMap="BaseResultMap">
+  select dictionary_id,dictionary_name,dictionary_pnode,dictionary_level,dictionary_type  from dictionary where  dictionary_level=#{level} ORDER BY(dictionary_id)   LIMIT  #{pageNo}, #{pageSize};
+	</select>
+	
+	 <select id="getRootId"   resultType="java.lang.Integer">
+  select dictionary_id from dictionary where  dictionary_level=0 ORDER BY(dictionary_id)  ;
+	</select>
+		 <select id="getNoRootId"   resultType="java.lang.Integer">
+  select dictionary_id from dictionary where  dictionary_level=1 ORDER BY(dictionary_id)   ;
+	</select>
+
+<!-- 系统管理界面，计算记录 -->
+   <select id="countAccounts"    resultType="int">
+   		select count(*) from dictionary where dictionary_level=#{level};
+    </select>
+    
+    <!-- 修改题目分类 -->
+    <update id="updateByPrimaryKey" parameterType="indi.graduate.assistant.model.DictionaryBean" >
+    update dictionary
+    <set >
+      <if test="dictionaryName != null" >
+        dictionary_name = #{dictionaryName,jdbcType=VARCHAR},
+      </if>
+        <if test="dictionaryPnode != null" >
+        dictionary_pnode = #{dictionaryPnode,jdbcType=VARCHAR},
+      </if>
+      <if test="dictionaryType != null" >
+        dictionary_type = #{dictionaryType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where dictionary_id = #{dictionaryId,jdbcType=INTEGER}
+  </update>
+  
+   <!-- 问题分类界面，删除操作 -->
+    <delete id="deleteByPrimaryKey" parameterType="int">
+    delete from dictionary where dictionary_id=#{dictionaryId};
+    </delete>
+    
+    <!-- 查找子类方法 -->
+      <select id="selectByLevel" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from dictionary
+    where dictionary_level = #{level,jdbcType=INTEGER}
+  </select>
+ 
+</mapper>

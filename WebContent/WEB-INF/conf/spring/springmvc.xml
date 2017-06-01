@@ -1,0 +1,45 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+      http://www.springframework.org/schema/beans/spring-beans.xsd  
+      http://www.springframework.org/schema/context  
+      http://www.springframework.org/schema/context/spring-context.xsd  
+      http://www.springframework.org/schema/mvc  
+      http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+      http://www.springframework.org/schema/tx
+      http://www.springframework.org/schema/tx/spring-tx.xsd">
+	<mvc:annotation-driven />
+	<context:component-scan base-package="indi.graduate.assistant" />
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**/*.htm" />
+			<mvc:exclude-mapping path="/login.htm"/>
+			<bean class="indi.graduate.assistant.interceptor.UserInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+    
+	<bean id="velocityConfig"
+		class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+		<property name="resourceLoaderPath" value="/" />
+		<property name="velocityProperties">
+            <props>
+                <prop key="input.encoding">utf-8</prop>
+                <prop key="output.encoding">utf-8</prop>
+            </props>
+        </property>
+	</bean>
+
+	<!-- 配置后缀 -->
+	<bean id="velocityViewResolver"
+		class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
+		<property name="prefix" value="/" />
+		<property name="suffix" value=".vm" /> 
+		<property name="contentType" value="text/html;charset=utf-8"></property>
+		<property name="toolboxConfigLocation" value="/WEB-INF/conf/vm-toolbox.xml" />
+	</bean>
+</beans>  

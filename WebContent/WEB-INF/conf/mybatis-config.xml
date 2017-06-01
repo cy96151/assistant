@@ -1,0 +1,20 @@
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+     <settings>
+
+      <setting name="callSettersOnNulls" value="true"/>
+
+  	</settings>
+    <!--引入其他的映射的文件-->
+    <mappers>
+        <mapper resource="indi/graduate/assistant/mapping/DictionaryBeanMapper.xml"/>
+        <mapper resource="indi/graduate/assistant/mapping/InterviewBeanMapper.xml"/>
+        <mapper resource="indi/graduate/assistant/mapping/InterviewDetailBeanMapper.xml"/>
+        <mapper resource="indi/graduate/assistant/mapping/IntervieweeBeanMapper.xml"/>
+        <mapper resource="indi/graduate/assistant/mapping/QuestionBeanMapper.xml"/>
+        <mapper resource="indi/graduate/assistant/mapping/UserBeanMapper.xml"/>
+        <mapper resource="indi/graduate/assistant/mapping/InterviewCategoryBeanMapper.xml"/>
+    </mappers>
+</configuration>

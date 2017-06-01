@@ -1,0 +1,158 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="../../static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="../../lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>设定面试官</title>
+</head>
+<body>
+<div class="page-container">
+    <div class="mt-20">
+        <table class="table table-border table-bordered table-bg table-hover table-sort" id="gridtable">
+            <thead>
+                <tr class="text-c">
+                    <th></th>
+                    <th>账户编号</th>
+                    <th>面试官姓名</th>
+                    <th>联系方式</th>
+                    <th>擅长领域</th>
+                    <th>部门</th>
+                    <th>技术等级</th>
+                    <th>领导项目</th>
+                    <th>兴趣爱好</th>
+                </tr>
+            </thead>
+            <tbody>
+            #foreach( $row in $rows )
+                <tr class="text-c">
+                    <td><input name="table_checkbox" id="checkbox_$!{row.getUserId()}" type="radio" value="$!{row.getUserId()}"></td>
+                    <td>$!{row.getUserId()}</td>
+                    <td>$!{row.getUserName()}</td>
+                    <td>$!{row.getUserPhone()}</td>
+                    <td>$!{row.getUserTechnology()}</td>
+                    <td>$!{row.getUserDepartment()}</td>
+                    <td>$!{row.getUserGradeTemp()}</td>
+                    <td>$!{row.getUserProject()}</td>
+                    <td>$!{row.getUserHobby()}</td>
+                </tr>
+            #end
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="../../lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="../../lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="../../static/h-ui/js/H-ui.min.js"></script> 
+<script type="text/javascript" src="../../static/h-ui.admin/js/H-ui.admin.js"></script>
+<!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="../../lib/My97DatePicker/4.8/WdatePicker.js"></script> 
+<script type="text/javascript" src="../../lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
+<script type="text/javascript" src="../../lib/laypage/1.2/laypage.js"></script>
+<script type="text/javascript">
+oTable = $('.table-sort').dataTable({
+	"aLengthMenu" : [5],
+	"iDisplayLength" : 5,
+	"sScrollY" : 200,
+	"bScrollCollapse" : false,
+    "aaSorting": [[ 1, "desc" ]],//默认第几个排序
+    "bStateSave": true,//状态保存
+    "aoColumnDefs": [
+      {"bVisible": false, "aTargets": [1]}, //控制列的隐藏显示
+      {"orderable":false,"aTargets":[0,2,3,4,7,8]}// 制定列不参与排序
+    ]
+});
+
+$("#gridtable tbody tr").click(function(e) {
+    if ($(this).hasClass('row_selected')) {
+        $(this).removeClass('row_selected');
+    } else {
+    	oTable.$('tr.row_selected').removeClass('row_selected');
+        $(this).addClass('row_selected');
+        var aData = oTable.fnGetData(this);
+        if (null != aData) {
+            $("input[id='checkbox_"+aData[1]+"']").prop("checked",true);
+        }
+    }
+});
+
+$("#gridtable tbody tr").dblclick(function() {
+    var aData = oTable.fnGetData(this);
+    if (null != aData && "$!{intervieweeId}"!="") {
+        $.post("../interviewee/addInterviewer.json",{"interviewId":"$!{interviewId}","intervieweeId":"$!{intervieweeId}","userId":aData[1]},function(result){
+            if(result.code=="1"){
+                layer.msg('success!',{icon:6});
+                parent.location.replace('../interviewee/intervieweeList.htm?PageNo=1&PageSize=100');
+            }else{
+                layer.alert(result.codeDes, {icon: 5});
+                return;
+            }
+        },"json");
+    }
+});
+
+function addaccountsMangerList_submit(){
+    var checkRows = $("input[name='table_checkbox']:checked");
+    if(checkRows.length==1){
+        var userIdEdit=checkRows.val();
+        $.post("../interviewee/addInterviewer.json",{"interviewId":"$!{interviewId}","intervieweeId":"$!{intervieweeId}","userId":userIdEdit},function(result){
+            if(result.code=="1"){
+                layer.msg('success!',{icon:6});
+                parent.location.replace('../interviewee/intervieweeList.htm?PageNo=1&PageSize=100');
+            }else{
+                layer.alert(result.codeDes, {icon: 5});
+                return;
+            }
+        },"json");
+    }else{
+        layer.msg("请选择一条信息", {icon: 5,time: 1000});
+    }
+}
+
+function addaccountsMangerList_select(){
+    var checkRows = $("input[name='table_checkbox']:checked");
+    if(checkRows.length==1){
+        var userIdEdit=checkRows.val();
+        var data=getTableContent(userIdEdit,1);
+        var returnData={
+        	userId:userIdEdit,
+        	userName:data[2]
+        }
+        return returnData;
+    }else{
+        layer.msg("请选择一条信息", {icon: 5,time: 1000});
+    }
+}
+
+function getTableContent(primaryKey,j){
+    var nTrs = oTable.fnGetNodes();//fnGetNodes获取表格所有行，nTrs[i]表示第i行tr对象
+    for(var i = 0; i < nTrs.length; i++){
+        var rowData=oTable.fnGetData(nTrs[i]);
+        if(rowData[j]==primaryKey){
+            return rowData;     
+        }
+    }
+    return null;
+}
+</script>
+</body>
+</html>

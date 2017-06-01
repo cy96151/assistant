@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>修改密码 - 面试助手 v1.0</title>
+</head>
+<body>
+<article class="page-container">
+	<form class="form form-horizontal" id="form-admin-editpw">
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>原密码：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="password" class="input-text" autocomplete="off" value="" placeholder="原密码" id="userPassword" name="userPassword">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>新密码：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="password" class="input-text" autocomplete="off" value="" placeholder="新密码" id="userPassword1" name="userPassword1">
+		</div>
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>再次确认：</label>
+        <div class="formControls col-xs-8 col-sm-9">
+            <input type="password" class="input-text" autocomplete="off" value="" placeholder="再次确认" id="userPassword2" name="userPassword2">
+        </div>
+    </div>
+	<div class="row cl">
+		<div class="col-xs-6 col-sm-6 col-xs-offset-5 col-sm-offset-5">
+			<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+		</div>
+	</div>
+	</form>
+</article>
+
+<!--_footer 作为公共模版分离出去--> 
+<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script> 
+<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script>
+<!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script> 
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script> 
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script> 
+<script type="text/javascript" src="static/login/js/md5-min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	
+	$("#form-admin-editpw").validate({
+		rules:{
+			userPassword:{
+				required:true,
+			},
+			userPassword1:{
+				required:true,
+				checkUserPassword:true
+			},
+			userPassword2:{
+				required:true,
+				equalTo: "#userPassword1"
+			}
+		},
+		onkeyup:false,
+		focusCleanup:true,
+		success:"valid",
+		submitHandler:function(form){
+			var PasswordDto=$(form).serializeArray();
+			PasswordDto[0].value=hex_md5(PasswordDto[0].value);
+			PasswordDto[1].value=hex_md5(PasswordDto[1].value);
+			PasswordDto[2].value=hex_md5(PasswordDto[2].value);
+			$.post("interview/user/editPassword.json",PasswordDto,function(result){
+				if(result.code!="1"){
+                    layer.msg(result.codeDes,{icon:5,time:1000});
+                }else{
+                    layer.alert(result.codeDes, {icon:6,title:'success',closeBtn:0},function(index){
+                    	parent.parent.location.replace('exit.htm');
+                        layer.close(index);
+                    });  
+                }
+			},"json");
+        }
+	});
+});
+$.validator.addMethod("checkUserPassword", function(s) {
+    var patrn=/^(\w){6,20}$/;   
+    if (!patrn.exec(s)){
+        return false;
+    }else{
+        return true;
+    }
+}, '只能输入6-20个字母、数字、下划线!');
+
+</script> 
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

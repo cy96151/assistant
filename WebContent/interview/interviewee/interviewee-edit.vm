@@ -1,0 +1,214 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="../../static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="../../lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/css/style.css" />
+
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>面试人信息 - 面试助手 v1.0</title>
+</head>
+<body>
+<article class="page-container">
+	<form class="form form-horizontal" id="form-interviewee-edit">
+	<input type="hidden" name="intervieweeId" id="intervieweeId" value="$!{intervieweeId}">
+	<input type="hidden" name="interviewId" id="interviewId" value="">
+	<div class="row cl">
+		<label class="form-label col-xs-2 col-sm-2"><span class="c-red">*</span>姓名：</label>
+		<div class="formControls col-xs-4 col-sm-4">
+			<input type="text" class="input-text" autocomplete="off" value="" placeholder="姓名" id="intervieweeName" name="intervieweeName">
+		</div>
+		<label class="form-label col-xs-2 col-sm-2">性别：</label>
+		<div class="formControls col-xs-4 col-sm-4">
+		    <span class="select-box">
+                <select class="select" size="1" name="intervieweeSex">
+                    <option value="" selected>空</option>
+                    <option value="1">男</option>
+                    <option value="2">女</option>
+                </select>
+            </span>
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-2 col-sm-2"><span class="c-red">*</span>手机号：</label>
+		<div class="formControls col-xs-4 col-sm-4">
+			<input type="text" class="input-text" autocomplete="off" value="" placeholder="手机号" id="intervieweePhone" name="intervieweePhone">
+		</div>
+        <label class="form-label col-xs-2 col-sm-2"><span class="c-red">*</span>毕业院校：</label>
+        <div class="formControls col-xs-4 col-sm-4">
+            <input type="text" class="input-text" autocomplete="off" value="" placeholder="毕业院校" id="intervieweeSchool" name="intervieweeSchool">
+        </div>
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-2 col-sm-2"><span class="c-red">*</span>毕业时间：</label>
+        <div class="formControls col-xs-4 col-sm-4">
+            <input type="text" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd',readOnly:true })" value="" id="intervieweeGraduationTime" name="intervieweeGraduationTime" class="input-text Wdate">
+        </div>
+        <label class="form-label col-xs-2 col-sm-2">专业特长：</label>
+        <div class="formControls col-xs-4 col-sm-4">
+            <input type="text" class="input-text" autocomplete="off" value="" placeholder="专业特长" id="intervieweePecialties" name="intervieweePecialties">
+        </div>
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-2 col-sm-2"><span class="c-red">*</span>岗位：</label>
+        <div class="formControls col-xs-4 col-sm-4">
+            <input type="text" class="input-text" autocomplete="off" value="" placeholder="岗位" id="intervieweePost" name="intervieweePost">
+        </div>
+        <label class="form-label col-xs-2 col-sm-2">项目组：</label>
+        <div class="formControls col-xs-4 col-sm-4">
+            <input type="text" class="input-text" autocomplete="off" value="" placeholder="项目组" id="intervieweeProject" name="intervieweeProject">
+        </div>
+    </div>
+    <input type="hidden" name="userId" id="userId" value="">
+    <div class="row cl">
+        <label class="form-label col-xs-2 col-sm-2">面试官：</label>
+        <div class="formControls col-xs-4 col-sm-4">
+            <input type="text" class="input-text" autocomplete="off" value="" placeholder="面试官" id="userName" name="userName" readonly>
+        </div>
+        <label class="form-label col-xs-2 col-sm-2">面试途径：</label>
+        <div class="formControls col-xs-4 col-sm-4">
+            <span class="select-box">
+                <select class="select" size="1" name="interviewWay">
+                    <option value="" selected>空</option>
+                    <option value="1">现场面试</option>
+                    <option value="2">电话面试</option>
+                    <option value="3">视频面试</option>
+                </select>
+            </span>
+        </div>
+    </div>
+	<div class="row cl">
+		<div class="col-xs-6 col-sm-6 col-xs-offset-5 col-sm-offset-5">
+			<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+		</div>
+	</div>
+	</form>
+</article>
+
+<!--_footer 作为公共模版分离出去--> 
+<script type="text/javascript" src="../../lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="../../lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="../../static/h-ui/js/H-ui.min.js"></script> 
+<script type="text/javascript" src="../../static/h-ui.admin/js/H-ui.admin.js"></script>
+<!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="../../lib/jquery.validation/1.14.0/jquery.validate.js"></script> 
+<script type="text/javascript" src="../../lib/jquery.validation/1.14.0/validate-methods.js"></script> 
+<script type="text/javascript" src="../../lib/jquery.validation/1.14.0/messages_zh.js"></script> 
+<script type="text/javascript" src="../../lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	
+	$("#form-interviewee-edit").validate({
+		rules:{
+			intervieweeName:{
+				required:true,
+			},
+			intervieweePhone:{
+				required:true,
+			},
+			intervieweeSchool:{
+				required:true,
+				intervieweeSchoolCheck:true
+			},
+			intervieweeGraduationTime:{
+				required:true
+			},
+			intervieweePost:{
+				required:true
+			}
+		},
+		onkeyup:false,
+		focusCleanup:true,
+		success:"valid",
+		submitHandler:function(form){
+			$(form).ajaxSubmit({
+                type: 'post',
+                url: "addIntervieweeList.json" ,
+                success: function(data){
+                	if(data.code!="1"){
+                        layer.msg(data.codeDes,{icon:5,time:1000});
+                    }else{
+                        layer.msg('success!',{icon:6});
+                        parent.location.replace('intervieweeList.htm?PageNo=1&PageSize=100');
+                    }
+                },
+                error: function(XmlHttpRequest, textStatus, errorThrown){
+                	parent.layer.msg('error!',{icon:5});
+                }
+            });
+        }
+	});
+		
+	if("$!{intervieweeId}"!=""){
+		var data=parent.getTableContent("$!{intervieweeId}",1);
+		$("input[id='intervieweeName']").val(data[6]);
+		$("select[name='intervieweeSex']").val(data[7]);
+		$("input[id='intervieweePhone']").val(data[8]);
+		$("input[id='intervieweeSchool']").val(data[9]);
+		$("input[id='intervieweeGraduationTime']").val(data[10]);
+		$("input[id='intervieweePost']").val(data[11]);
+		$("input[id='intervieweeProject']").val(data[12]);
+		$("input[id='userId']").val(data[14]);
+		$("input[id='userName']").val(data[5]);
+		$("select[name='interviewWay']").val(data[17]);
+		$("input[id='intervieweePecialties']").val(data[15]);
+		if(data[16]!=0){
+			$("input[id='interviewId']").val(data[16]);
+		}
+	}
+});
+$.validator.addMethod("intervieweeSchoolCheck", function(s) {
+    var patrn=/^[\u4E00-\u9FA5]+$/;   
+    if (!patrn.exec(s)){
+        return false;
+    }else{
+        return true;
+    }
+}, '请输入中文的院校名');
+
+$("input[id='userName']").click(function(){
+	parent.layer.open({
+        type: 2,
+        area: ['800px','470px'],
+        fix: false, //不固定
+        maxmin: true,
+        shade:0.4,
+        title: '选择面试官',
+        content: '../user/addaccountsMangerList.htm',
+        btn: '选择',
+        btnAlign: 'c',
+        btn1:function(index,layero){
+            var iframeWin = parent.window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
+            var returnData=iframeWin.addaccountsMangerList_select();
+            $("input[id='userId']").val(returnData.userId);
+            $("input[id='userName']").val(returnData.userName);
+            parent.layer.close(index);
+        }
+    });
+});
+
+</script> 
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

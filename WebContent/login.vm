@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="Content-Type" content="text/html;charset=GBK" />  
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>面试助手</title>
+<!-- Favicon -->
+<link rel="shortcut icon" href="static/login/favicon.png">
+<link rel="icon" href="static/login/favicon.png" type="image/x-icon">
+<link href="static/login/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="static/login/css/style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<div class="login">
+  <div class="login-body">
+    <div class="login-brand">
+      <img class="img-responsive" src="static/login/images/logo_admin.png" />
+    </div>
+    <div class="login-form">
+      <form data-toggle="md-validator" novalidate action="#" method="post" target="_top" id="loginform">
+        <div class="md-form-group md-label-floating">
+          <input class="md-form-control" type="text" name="userName" id="userName" autocomplete="off" data-msg-required="请输入您的用户名。" required/>
+          <label class="md-control-label">用户名</label>
+        </div>
+        <div class="md-form-group md-label-floating">
+          <input class="md-form-control" type="password" name="passWord" id="passWord" data-msg-required="请输入您的密码。" required/>
+          <label class="md-control-label">密码</label>
+        </div>
+        <div class="md-form-group-checkbox md-label-floating">
+            <div class="checkbox checkbox-custom text-muted">
+                  <label>
+                    <input type="checkbox" name="online" id="online" value="">
+                    <span class="checker"></span>7天内自动登录
+                  </label>
+            </div>
+        </div>
+        <button class="btn btn-primary btn-block" type="submit">登 录</button>
+      </form>
+    </div>
+  </div>
+  <div class="login-footer">© <a href="http://tomcat.cy96151.cn">tomcat.cy96151.cn</a> 2017</div>
+</div>
+
+<script type="text/javascript" src="static/login/js/jquery.min.js"></script>
+<script type="text/javascript" src="static/login/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="static/login/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="static/login/js/md5-min.js"></script>
+<script src="lib/layer/2.4/layer.js"></script>
+<script type="text/javascript">
+$().ready(function(e) {
+	form_validate();
+	$(".md-form-control").focus(function(){
+	    $(this).parent('.md-form-group').addClass("is-focused");
+	}).blur(function(){
+	    var a = ($(this).val() || "").length;
+		$(this).parent('.md-form-group').toggleClass("has-value", !!a);
+	    $(this).parent('.md-form-group').removeClass("is-focused");
+	});
+});
+
+// 表单验证
+var form_validate = function(a) {
+    $.validator.setDefaults({
+        errorElement: "span",
+        errorClass: "has-error",
+        validClass: "has-success",
+        errorPlacement: function(a, b) {
+            var c = b.parents(".md-form-group").last();
+            a.addClass("md-help-block").appendTo(c)
+        },
+        highlight: function(b, c, d) {
+            $(b).closest(".md-form-group").addClass(c).removeClass(d).find(".md-help-block").not(".has-error").hide()
+        },
+        unhighlight: function(b, c, d) {
+            $(b).closest(".md-form-group").addClass(d).removeClass(c).find(".md-help-block").not(".has-error").show()
+        },
+        rules: {
+        	userName: "isRegisterUserName",
+        	passWord: "isPasswd"
+        },
+        submitHandler: function(){
+        	var data={
+        		userName : $("input[name='userName']").val(),
+        		passWord : hex_md5($("input[name='passWord']").val()),
+        		online : $("input[name='online']").prop("checked")
+        	};
+        	$.post("login.json",data,function(result){
+        		if(result.code=="1"){
+        			window.location.href=result.basePath+"index.htm";
+        		}else{
+        			layer.msg(result.codeDes, {icon: 5 , time : 1000});
+        			return;
+        		}
+        	},"json");
+        }
+    }),
+    $('[data-toggle="md-validator"]').each(function() {
+        var b = $(this),
+        c = b.data();
+        b.validate(c)
+    })
+};
+
+//校验用户名，只能输入5~20个，以字母开头，可带数字、“_","."的字符
+$.validator.addMethod("isRegisterUserName", function(s) {
+	var patrn=/^[a-zA-Z]{1}([a-zA-Z0-9]|[._]){4,19}$/;   
+	if (!patrn.exec(s)) {
+		return false;
+	}else{
+		return true ;
+	}
+}, '请输入以字母开头，5~20位用户名');
+
+//校验密码：只能输入6-20个字母、数字、下划线   
+$.validator.addMethod("isPasswd", function(s) {
+	var patrn=/^(\w){6,20}$/;   
+	if (!patrn.exec(s)){
+		return false;
+	}else{
+		return true;
+	}
+}, '只能输入6-20个字母、数字、下划线');
+
+/*回车换行提交
+$("input").keypress(function(e) {  
+    if (e.which == 13) {
+    	var inputElement = $("#passWord")[0];
+        if(inputElement==this){
+        	$("form").submit();
+        }else{
+        	//inputElement.focus();
+        	//inputElement.select();
+        }
+    }  
+});  */
+</script>
+</body>
+</html>

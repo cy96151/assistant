@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="indi.graduate.assistant.dao.InterviewDetailBeanMapper">
+	<resultMap id="BaseResultMap"
+		type="indi.graduate.assistant.model.InterviewDetailBean">
+		<id column="id_id" property="idId" jdbcType="INTEGER" />
+		<result column="interview_id" property="interviewId" jdbcType="INTEGER" />
+		<result column="question_id" property="questionId" jdbcType="INTEGER" />
+		<result column="id_understanding" property="idUnderstanding"
+			jdbcType="INTEGER" />
+	</resultMap>
+	<resultMap id="ResultMapWithBLOBs"
+		type="indi.graduate.assistant.model.InterviewDetailBean" extends="BaseResultMap">
+		<result column="id_remark" property="idRemark" jdbcType="LONGVARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id_id, interview_id, question_id, id_understanding
+	</sql>
+	<sql id="Blob_Column_List">
+		id_remark
+	</sql>
+	<insert id="insertSelective" parameterType="indi.graduate.assistant.model.InterviewDetailBean">
+		insert into interview_detail
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="idId != null">
+				id_id,
+			</if>
+			<if test="interviewId != null">
+				interview_id,
+			</if>
+			<if test="questionId != null">
+				question_id,
+			</if>
+			<if test="idUnderstanding != null">
+				id_understanding,
+			</if>
+			<if test="idRemark != null">
+				id_remark,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="idId != null">
+				#{idId,jdbcType=INTEGER},
+			</if>
+			<if test="interviewId != null">
+				#{interviewId,jdbcType=INTEGER},
+			</if>
+			<if test="questionId != null">
+				#{questionId,jdbcType=INTEGER},
+			</if>
+			<if test="idUnderstanding != null">
+				#{idUnderstanding,jdbcType=INTEGER},
+			</if>
+			<if test="idRemark != null">
+				#{idRemark,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<!-- 获取面试详情 -->
+	<resultMap id="ScheduleMap" type="indi.graduate.assistant.dto.ScheduleDto">
+		<result column="question_type" property="questionType" jdbcType="INTEGER" />
+		<result column="num" property="num" jdbcType="INTEGER" />
+	</resultMap>
+	<select id="schedule" resultMap="ScheduleMap" parameterType="String">
+		SELECT question_type,COUNT(question_type) AS num FROM
+		question,interview_detail WHERE (interview_id = #{interviewId} AND question.question_id =
+		interview_detail.question_id) GROUP BY(question.question_type) ;
+	</select>
+	<select id="scheduleNum" resultType="int" parameterType="String">
+		SELECT count(id_id) FROM
+		question,interview_detail WHERE (interview_id = #{interviewId} AND question.question_id =
+		interview_detail.question_id) ;
+	</select>
+		
+	<select id="selectUnique" resultMap="ResultMapWithBLOBs" parameterType="Map">
+		select 
+		<include refid="Base_Column_List" /> 
+		,
+		<include refid="Blob_Column_List" />
+		from interview_detail
+		where interview_id = #{interviewId,jdbcType=INTEGER} AND question_id =#{questionId,jdbcType=INTEGER}
+	</select>
+	
+	<resultMap id="detailMap" type="indi.graduate.assistant.model.InterviewDetailBean">
+		<id column="id_id" property="idId"></id>
+		<result column="interview_id" property="interviewId" jdbcType="INTEGER" />
+		<result column="question_id" property="questionId" jdbcType="INTEGER"/>
+		<result column="id_understanding" property="idUnderstanding" jdbcType="INTEGER"/>
+		<result column="id_remark" property="idRemark" jdbcType="VARCHAR"/>
+	</resultMap>
+	<select id="getReport" resultMap="detailMap">
+		select id_id,interview_id,question_id,id_understanding,id_remark from interview_detail where interview_detail.interview_id=#{interviewId} GROUP BY id_id;
+	</select>
+	
+</mapper>

@@ -1,0 +1,196 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="../../static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="../../lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>题库管理</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 面试题库管理<span class="c-gray en">&gt;</span> 题库管理 <a class="btn btn-success radius r btn-refresh" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.pathname+'?PageNo=1&PageSize=100');" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+    <div class="text-c"> 题目类别：
+        <span class="select-box inline">
+        <select name="questionType" class="select">
+            <option value="0">全部</option>
+            #foreach( $row in $ddd )
+                <option value="$!row.getLabel()">$!row.getValue()</option>
+            #end
+        </select>
+        </span>
+        <button name="" id="" class="btn btn-success" type="submit" onclick="submit()"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+        <button name="" id="" class="btn btn-primary" type="submit" onclick="reset()"><i class="Hui-iconfont">&#xe72a;</i> 重置</button>
+    </div>
+    <div class="cl pd-5 bg-1 bk-gray mt-20"> 
+       <span class="l">
+           <a href="javascript:;" onclick="questionManagement_add()" class="btn btn-primary radius">
+               <i class="Hui-iconfont">&#xe600;</i> 新增</a> 
+           <a class="btn btn-danger radius" onclick="questionManagement_edit()" href="javascript:;">
+               <i class="Hui-iconfont">&#xe6df;</i> 修改</a>
+           <a class="btn btn-secondary radius" onclick="questionManagement_del()" href="javascript:;">
+               <i class="Hui-iconfont">&#xe6e2;</i> 删除</a>
+       </span> 
+       <span class="r">共有数据：<strong>$!{total}</strong> 条</span> 
+    </div>
+    <div class="mt-20">
+        <table class="table table-border table-bordered table-bg table-hover table-sort" id="gridtable">
+            <thead>
+                <tr class="text-c">
+                    <th><input name="" type="checkbox" value=""></th>
+                    <th>题号</th>
+                    <th>题目主干</th>
+                    <th>难易程度</th>
+                    <th>难易程度value</th>
+                    <th>题目类型</th>
+                    <th>题目类型value</th>
+                    <th>适用场景</th>
+                    <th>适用场景value</th>
+                    <th>题目详情</th>
+                    <th>参考答案</th>
+                    <th>题目主干2</th>
+                </tr>
+            </thead>
+            <tbody>
+            #foreach( $row in $rows )
+                <tr class="text-c">
+                    <td width="20"><input name="table_checkbox" id="checkbox_$!{row.getQuestionId()}" type="checkbox" value="$!{row.getQuestionId()}"></td>
+                    <td width="30">$!{row.getQuestionId()}</td>
+                    <td class="text-l"><a class="maincolor" href="javascript:;" onClick="questionManagement_show($!{row.getQuestionId()})">$!{row.getQuestionTopic()}</a></td>
+                    <td width="60">$!{row.getQuestionDifficultyStr()}</td>
+                    <td>$!{row.getQuestionDifficulty()}</td>
+                    <td width="100">$!{row.getQuestionType1()}</td>
+                    <td>$!{row.getQuestionType()}</td>
+                    <td width="180">$!{row.getQuestionFaceWayStr()}</td>
+                    <td>$!{row.getQuestionFaceWay()}</td>
+                    <td>$!{row.getQuestionQuestion()}</td>
+                    <td>$!{row.getQuestionAnswers()}</td>
+                    <td>$!{row.getQuestionTopic()}</td>
+                </tr>
+            #end
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="../../lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="../../lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="../../static/h-ui/js/H-ui.min.js"></script> 
+<script type="text/javascript" src="../../static/h-ui.admin/js/H-ui.admin.js"></script>
+<!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="../../lib/My97DatePicker/4.8/WdatePicker.js"></script> 
+<script type="text/javascript" src="../../lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
+<script type="text/javascript" src="../../lib/laypage/1.2/laypage.js"></script>
+<script type="text/javascript">
+oTable = $('.table-sort').dataTable({
+    "aaSorting": [[ 1, "desc" ]],//默认第几个排序
+    "bStateSave": true,//状态保存
+    "aoColumnDefs": [
+      {"bVisible": false, "aTargets": [4,6,8,9,10,11]}, //控制列的隐藏显示
+      {"orderable":false,"aTargets":[0,2]}// 制定列不参与排序
+    ]
+});
+
+$("#gridtable tbody tr").click(function(e) {
+    if ($(this).hasClass('row_selected')) {
+        $(this).removeClass('row_selected');
+        var aData = oTable.fnGetData(this);
+        if (null != aData) {
+            $("input[id='checkbox_"+aData[1]+"']").prop("checked",false);
+        }
+    } else {
+        $(this).addClass('row_selected');
+        var aData = oTable.fnGetData(this);
+        if (null != aData) {
+            $("input[id='checkbox_"+aData[1]+"']").prop("checked",true);
+        }
+    }
+});
+
+$("#gridtable tbody tr").dblclick(function() {
+    var aData = oTable.fnGetData(this);
+    if (null != aData) {
+        layer_show('问题基本信息','questionManagement-edit.htm?questionId='+aData[1],'800','540');
+    }
+});
+
+$("select[name='questionType']").val($!{questionType});
+
+function submit(){
+    var questionType=$("select[name='questionType']").val();
+    location.replace(location.pathname+'?PageNo=1&PageSize=100&questionType='+questionType);
+}
+
+function reset(){
+    $("select[name='questionType']").val(0);
+}
+
+function questionManagement_add(){
+    layer_show('问题基本信息','questionManagement-edit.htm','800','540');
+}
+
+function questionManagement_edit(){
+    var checkRows = $("input[name='table_checkbox']:checked");
+    if(checkRows.length==1){
+        var questionId=checkRows.val();
+        layer_show('问题基本信息','questionManagement-edit.htm?questionId='+questionId,'800','540');
+    }else{
+        layer.msg("请选择一条信息", {icon: 5,time: 1000});
+    }
+}
+
+function questionManagement_del(){
+    var checkRows = $("input[name='table_checkbox']:checked");
+    if(checkRows.length==1){
+        var questionId=checkRows.val();
+        layer.confirm('确认删除题库信息?', {icon: 3, title:'确认删除'}, function(index){
+              layer.close(index);
+              $.post("delquestionManagement.json",{"id":questionId},function(result){
+                  if(result.code=="1"){
+                      layer.msg('success!',{icon:6});
+                      location.replace('questionManagement.htm?PageNo=1&PageSize=100');
+                  }else{
+                      layer.alert(result.codeDes, {icon: 5});
+                      return;
+                  }
+              },"json");
+        });
+    }else{
+        layer.msg("请选择一条信息", {icon: 5,time: 1000});
+    }
+}
+
+function questionManagement_show(questionId){
+	layer_show('问题详情','questionManagement-show.htm?no1=9&no2=10&questionId='+questionId,'800','350');
+}
+
+function getTableContent(primaryKey,j){
+    var nTrs = oTable.fnGetNodes();//fnGetNodes获取表格所有行，nTrs[i]表示第i行tr对象
+    for(var i = 0; i < nTrs.length; i++){
+        var rowData=oTable.fnGetData(nTrs[i]);
+        if(rowData[j]==primaryKey){
+            return rowData;     
+        }
+    }
+    return null;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="indi.graduate.assistant.dao.IntervieweeBeanMapper">
+	<resultMap id="BaseResultMap" type="indi.graduate.assistant.model.IntervieweeBean">
+		<id column="interviewee_id" property="intervieweeId" jdbcType="INTEGER" />
+		<result column="interviewee_name" property="intervieweeName"
+			jdbcType="VARCHAR" />
+		<result column="interviewee_sex" property="intervieweeSex"
+			jdbcType="INTEGER" />
+		<result column="interviewee_phone" property="intervieweePhone"
+			jdbcType="VARCHAR" />
+		<result column="interviewee_status" property="intervieweeStatus"
+			jdbcType="INTEGER" />
+		<result column="interviewee_school" property="intervieweeSchool"
+			jdbcType="VARCHAR" />
+		<result column="interviewee_graduation_time" property="intervieweeGraduationTime"
+			jdbcType="TIMESTAMP" />
+		<result column="interviewee_post" property="intervieweePost"
+			jdbcType="VARCHAR" />
+		<result column="interviewee_project" property="intervieweeProject"
+			jdbcType="VARCHAR" />
+		<result column="interviewee_pecialties" property="intervieweePecialties"
+			jdbcType="VARCHAR" />
+		<result column="interviewee_num" property="intervieweeNum"
+			jdbcType="INTEGER" />
+		<result column="interviewee_last_time" property="intervieweeLastTime"
+			jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		interviewee_id, interviewee_name, interviewee_sex,
+		interviewee_phone,
+		interviewee_status,
+		interviewee_school,
+		interviewee_graduation_time, interviewee_post, interviewee_project,
+		interviewee_pecialties,interviewee_num,interviewee_last_time
+	</sql>
+	<select id="selectIntervieweeCount" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM interviewee t
+		UNION ALL
+		SELECT COUNT(*) FROM interviewee t WHERE to_days(t.interviewee_addtime) =
+		to_days(now())
+		UNION ALL
+		SELECT COUNT(*) FROM interviewee t WHERE TO_DAYS( NOW() ) - TO_DAYS(
+		t.interviewee_addtime) = 1
+		UNION ALL
+		SELECT COUNT(*) FROM interviewee t WHERE YEARWEEK(t.interviewee_addtime) =
+		YEARWEEK(now())
+		UNION ALL
+		SELECT COUNT(*) FROM interviewee t WHERE
+		date_format(t.interviewee_addtime,'%Y-%m') =
+		date_format(now(),'%Y-%m')
+
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from interviewee
+		where interviewee_id =
+		#{intervieweeId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		interviewee
+		where interviewee_id = #{intervieweeId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="indi.graduate.assistant.model.IntervieweeBean">
+		insert into interviewee
+		(interviewee_id, interviewee_name,
+		interviewee_sex,
+		interviewee_phone,
+		interviewee_status, interviewee_school,
+		interviewee_graduation_time,
+		interviewee_post,
+		interviewee_project,
+		interviewee_pecialties,interviewee_num,interviewee_last_time
+		)
+		values
+		(#{intervieweeId,jdbcType=INTEGER},
+		#{intervieweeName,jdbcType=VARCHAR},
+		#{intervieweeSex,jdbcType=INTEGER},
+		#{intervieweePhone,jdbcType=VARCHAR},
+		#{intervieweeStatus,jdbcType=INTEGER},
+		#{intervieweeSchool,jdbcType=VARCHAR},
+		#{intervieweeGraduationTime,jdbcType=TIMESTAMP},
+		#{intervieweePost,jdbcType=VARCHAR},
+		#{intervieweeProject,jdbcType=VARCHAR},
+		#{intervieweePecialties,jdbcType=VARCHAR},
+		#{intervieweeNum,jdbcType=INTEGER},
+		#{intervieweeLastTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="indi.graduate.assistant.model.IntervieweeBean">
+		insert into interviewee
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="intervieweeId != null">
+				interviewee_id,
+			</if>
+			<if test="intervieweeName != null">
+				interviewee_name,
+			</if>
+			<if test="intervieweeSex != null">
+				interviewee_sex,
+			</if>
+			<if test="intervieweePhone != null">
+				interviewee_phone,
+			</if>
+			<if test="intervieweeStatus != null">
+				interviewee_status,
+			</if>
+			<if test="intervieweeSchool != null">
+				interviewee_school,
+			</if>
+			<if test="intervieweeGraduationTime != null">
+				interviewee_graduation_time,
+			</if>
+			<if test="intervieweePost != null">
+				interviewee_post,
+			</if>
+			<if test="intervieweeProject != null">
+				interviewee_project,
+			</if>
+			<if test="intervieweePecialties != null">
+				interviewee_pecialties,
+			</if>
+			<if test="intervieweeNum != null">
+				interviewee_num,
+			</if>
+			<if test="intervieweeLastTime != null">
+				interviewee_last_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="intervieweeId != null">
+				#{intervieweeId,jdbcType=INTEGER},
+			</if>
+			<if test="intervieweeName != null">
+				#{intervieweeName,jdbcType=VARCHAR},
+			</if>
+			<if test="intervieweeSex != null">
+				#{intervieweeSex,jdbcType=INTEGER},
+			</if>
+			<if test="intervieweePhone != null">
+				#{intervieweePhone,jdbcType=VARCHAR},
+			</if>
+			<if test="intervieweeStatus != null">
+				#{intervieweeStatus,jdbcType=INTEGER},
+			</if>
+			<if test="intervieweeSchool != null">
+				#{intervieweeSchool,jdbcType=VARCHAR},
+			</if>
+			<if test="intervieweeGraduationTime != null">
+				#{intervieweeGraduationTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="intervieweePost != null">
+				#{intervieweePost,jdbcType=VARCHAR},
+			</if>
+			<if test="intervieweeProject != null">
+				#{intervieweeProject,jdbcType=VARCHAR},
+			</if>
+			<if test="intervieweePecialties != null">
+				#{intervieweePecialties,jdbcType=VARCHAR},
+			</if>
+			<if test="intervieweeNum != null">
+				#{intervieweeNum,jdbcType=INTEGER},
+			</if>
+			<if test="intervieweeLastTime != null">
+				#{intervieweeLastTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="indi.graduate.assistant.model.IntervieweeBean">
+		update interviewee
+		<set>
+			<if test="intervieweeName != null">
+				interviewee_name = #{intervieweeName,jdbcType=VARCHAR},
+			</if>
+			<if test="intervieweeSex != null">
+				interviewee_sex = #{intervieweeSex,jdbcType=INTEGER},
+			</if>
+			<if test="intervieweePhone != null">
+				interviewee_phone = #{intervieweePhone,jdbcType=VARCHAR},
+			</if>
+			<if test="intervieweeStatus != null">
+				interviewee_status =
+				#{intervieweeStatus,jdbcType=INTEGER},
+			</if>
+			<if test="intervieweeSchool != null">
+				interviewee_school =
+				#{intervieweeSchool,jdbcType=VARCHAR},
+			</if>
+			<if test="intervieweeGraduationTime != null">
+				interviewee_graduation_time =
+				#{intervieweeGraduationTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="intervieweePost != null">
+				interviewee_post = #{intervieweePost,jdbcType=VARCHAR},
+			</if>
+			<if test="intervieweeProject != null">
+				interviewee_project =
+				#{intervieweeProject,jdbcType=VARCHAR},
+			</if>
+			<if test="intervieweePecialties != null">
+				interviewee_pecialties =
+				#{intervieweePecialties,jdbcType=VARCHAR},
+			</if>
+			<if test="intervieweeNum != null">
+				interviewee_num = #{intervieweeNum,jdbcType=INTEGER},
+			</if>
+			<if test="intervieweeLastTime != null">
+				interviewee_last_time =
+				#{intervieweeLastTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where interviewee_id = #{intervieweeId,jdbcType=INTEGER}
+	</update>
+
+
+	<resultMap id="IntervieweeDto" type="indi.graduate.assistant.dto.IntervieweeDto">
+		<id column="interviewee_id" property="intervieweeId" jdbcType="INTEGER" />
+		<result column="interviewee_name" property="intervieweeName"
+			jdbcType="VARCHAR" />
+		<result column="interviewee_sex" property="intervieweeSex"
+			jdbcType="INTEGER" />
+		<result column="interviewee_phone" property="intervieweePhone"
+			jdbcType="VARCHAR" />
+		<result column="interviewee_status" property="intervieweeStatus"
+			jdbcType="INTEGER" />
+		<result column="interviewee_status1" property="intervieweeStatus1"
+			jdbcType="VARCHAR" />
+		<result column="interviewee_school" property="intervieweeSchool"
+			jdbcType="VARCHAR" />
+		<result column="interviewee_graduation_time" property="intervieweeGraduationTime"
+			jdbcType="TIMESTAMP" />
+		<result column="interviewee_post" property="intervieweePost"
+			jdbcType="VARCHAR" />
+		<result column="interviewee_project" property="intervieweeProject"
+			jdbcType="VARCHAR" />
+		<result column="interviewee_pecialties" property="intervieweePecialties"
+			jdbcType="VARCHAR" />
+		<result column="interviewee_num" property="intervieweeNum"
+			jdbcType="INTEGER" />
+		<result column="interviewee_last_time" property="intervieweeLastTime"
+			jdbcType="TIMESTAMP" />
+		<result column="interview_id" property="interviewId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="VARCHAR" />
+		<result column="user_name" property="userName" jdbcType="VARCHAR" />
+		<result column="interview_way" property="interviewWay"
+			jdbcType="INTEGER" />
+		<result column="interview_way1" property="interviewWay1"
+			jdbcType="VARCHAR" />
+		<result column="interview_skill_level" property="interviewSkillLevel"
+			jdbcType="INTEGER" />
+		<result column="interview_type" property="interviewType"
+			jdbcType="INTEGER" />
+		<result column="interview_time" property="interviewTime"
+			jdbcType="TIMESTAMP" />
+	</resultMap>
+	<!-- 查询面试人列表 -->
+	<select id="selectIntervieweeList" parameterType="Map"
+		resultMap="IntervieweeDto">
+		SELECT
+		interviewee.*,getDictLabel(interviewee_status,0) AS
+		interviewee_status1,getDictLabel(interview_way,2) AS
+		interview_way1,interview_id,user_name,user_id,interview_way,getDictLabel(interview_way,2)
+		AS interview_way2,interview_skill_level,interview_type,interview_time
+		FROM
+		interviewee LEFT JOIN
+		(SELECT interview.*,user.user_name FROM
+		interview,user
+		WHERE `user`.user_id = interview.user_id)AS s
+		ON
+		interviewee.interviewee_id = s.interviewee_id AND s.interview_end =1
+		where 1=1
+		<if test="intervieweeStatus != null">
+			AND interviewee.interviewee_status
+			=#{intervieweeStatus,jdbcType=INTEGER}
+		</if>
+		<if test="intervieweePhone != null">
+			AND interviewee.interviewee_phone
+			=#{intervieweePhone,jdbcType=INTEGER}
+		</if>
+		<if test="intervieweeName != null">
+			AND interviewee.interviewee_name
+			LIKE
+			"%"#{intervieweeName,jdbcType=INTEGER}"%"
+		</if>
+		ORDER BY(interviewee_id) ASC
+		LIMIT #{pageNo},#{pageSize};
+	</select>
+	<select id="countAccounts" parameterType="Map" resultType="int">
+		SELECT count(*)
+		FROM interviewee LEFT JOIN
+		(SELECT
+		interview.*,user.user_name FROM interview,user
+		WHERE `user`.user_id =
+		interview.user_id)AS s
+		ON interviewee.interviewee_id = s.interviewee_id
+		AND s.interview_end =1
+		where 1=1
+		<if test="intervieweeStatus != null">
+			AND interviewee.interviewee_status
+			=#{intervieweeStatus,jdbcType=INTEGER}
+		</if>
+		<if test="intervieweePhone != null">
+			AND interviewee.interviewee_phone
+			=#{intervieweePhone,jdbcType=INTEGER}
+		</if>
+		<if test="intervieweeName != null">
+			AND interviewee.interviewee_name
+			=#{intervieweeName,jdbcType=INTEGER}
+		</if>
+	</select>
+	<!--查询最后ID -->
+	<select id="selectLastId" resultType="int">
+		SELECT LAST_INSERT_ID()
+	</select>
+
+	<!-- 吴翔新增，更改 面试状态方法 -->
+	<update id="updateStatussByPrimaryKey" parameterType="indi.graduate.assistant.model.IntervieweeBean">
+		update
+		interviewee
+		set interviewee_status = #{intervieweeStatus},
+		interviewee_num = #{intervieweeNum},
+		interviewee_last_time =
+		#{intervieweeLastTime}
+		where interviewee_id = #{intervieweeId}
+	</update>
+</mapper>

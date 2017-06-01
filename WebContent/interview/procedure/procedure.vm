@@ -1,0 +1,204 @@
+#set($beginType="0")
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="static/login/favicon.png" >
+<link rel="Shortcut Icon" href="../../static/login/favicon.png" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="../../static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/css/H-ui.admin.procedure.css" />
+<link rel="stylesheet" type="text/css" href="../../lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/skin/blue/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>面试辅助系统</title>
+</head>
+<body>
+<header class="navbar-wrapper">
+    <div class="navbar navbar-fixed-top">
+        <div class="container-fluid cl"> <label class="logo navbar-logo f-l mr-10 hidden-xs">面试辅助系统</label> <label class="logo navbar-logo-m f-l mr-10 visible-xs">面试辅助系统</label> 
+            <span class="logo navbar-slogan f-l mr-10 hidden-xs">v1.0</span> 
+        <nav id="Hui-userbar" class="nav navbar-nav navbar-userbar hidden-xs">
+            <ul class="cl">
+                <li id="Hui-msg"> <a href="#" onclick="exit()" title="退出系统"><i class="Hui-iconfont" style="font-size:18px">&#xe726;</i></a> </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+</header>
+<aside class="Hui-aside">
+    <div class="menu_dropdown bk_2">
+        <span class="ml-10 f-16 lh-30"><strong>答题情况：</strong></span>
+        <table class="table table-border table-bg table-hover table-sort" id="menuTable">
+            <thead>
+                <tr>
+                    <th class="f-14">题目类型</th>
+                    <th class="text-r f-14">答题数目</th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody style="cursor:pointer;">
+                #foreach( $row in $rows )
+                <tr>
+                    <td class="f-14">$!{row.getDictionaryName()}</td>
+                    <th class="text-r f-14">$!{row.getNum()}</th>
+                    <td>$!{row.getDictionaryId()}</td>
+                    <td>$!{row.getTypeSum()}</td>
+                    <td>0</td>
+                </tr>
+                    #if("$!{row.getNum()}"!="$!{row.getTypeSum()}" && $beginType=="0")
+                        #set($beginType="$!{row.getDictionaryId()}")
+                    #end
+                #end
+            </tbody>
+        </table>
+    </div>
+</aside>
+<div class="dislpayArrow hidden-xs"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a></div>
+<section class="Hui-article-box">
+    <div id="Hui-tabNav" class="Hui-tabNavTop hidden-xs">
+    <table class="table mt-25">
+        <tbody>
+            <tr>
+                <th width="16.6%" class="text-r">姓名：</th>
+                <td width="16.6%">$!{isStartUpInterviewDto.getIntervieweeName()}</td>
+                <th width="16.6%" class="text-r">性别：</th>
+                <td width="16.6%">$!{isStartUpInterviewDto.getIntervieweeSex1()}</td>
+                <th width="16.6%" class="text-r">毕业学校：</th>
+                <td width="16.6%">$!{isStartUpInterviewDto.getIntervieweeSchool()}</td>
+            </tr>
+            <tr>
+                <th class="text-r">毕业时间：</th>
+                <td>$!dateUtil.format('yyyy-MM-dd',$!isStartUpInterviewDto.getIntervieweeGraduationTime())</td>
+                <th class="text-r">手机号：</th>
+                <td>$!{isStartUpInterviewDto.getIntervieweePhone()}</td>
+                <th class="text-r">应聘岗位：</th>
+                <td>$!{isStartUpInterviewDto.getIntervieweePost()}</td>
+            </tr>
+            <tr>
+                <th class="text-r">项目组：</th>
+                <td>$!{isStartUpInterviewDto.getIntervieweeProject()}</td>
+                <th class="text-r">面试途径：</th>
+                <td>$!{isStartUpInterviewDto.getInterviewWay1()}</td>
+                <th class="text-r">面试类型：</th>
+                <td>$!{isStartUpInterviewDto.getInterviewType1()}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="mt-10 text-c">
+        <input class="btn btn-primary radius" type="button" onclick="clickDetail()" value="点击详情">
+        <input class="btn btn-danger radius ml-40" type="button" onclick="finish(0)" value="完成面试">
+    </div>  
+    </div>
+    <div id="Hui-tabNav" class="Hui-tabNav hidden-xs">
+        <div class="Hui-tabNav-wp">
+            <ul id="min_title_list" class="acrossTab cl">
+                <li class="active">
+                    <span title="面试试题" data-href="member-list.html">面试试题</span>
+                    <em></em></li>
+        </ul>
+    </div>
+        <div class="Hui-tabNav-more btn-group"><a id="js-tabNav-prev" class="btn radius btn-default size-S" href="javascript:;"><i class="Hui-iconfont">&#xe6d4;</i></a><a id="js-tabNav-next" class="btn radius btn-default size-S" href="javascript:;"><i class="Hui-iconfont">&#xe6d7;</i></a></div>
+</div>
+    <div id="iframe_box" class="Hui-article">
+        <div class="show_iframe">
+            <div style="display:none" class="loading"></div>
+            <iframe scrolling="yes" frameborder="0" src="procedureForm.htm?questionFaceWay=$!{isStartUpInterviewDto.interviewWay}&interviewId=$!{isStartUpInterviewDto.interviewId}&questionId=0&oldQuestionType=0&questionType=$beginType"></iframe>
+    </div>
+</div>
+</section>
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="../../lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="../../lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="../../static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="../../static/h-ui.admin/js/H-ui.admin.procedure.js"></script> <!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="../../lib/jquery.contextmenu/jquery.contextmenu.r2.js"></script>
+<script type="text/javascript" src="../../lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+oTable = $('#menuTable').dataTable({
+    "bJQueryUI" : false,
+    "bPaginate" : false,
+    "bInfo" : false,
+    "bSort" : false,
+    "bFilter" : false,
+    "bStateSave": true,//状态保存
+    "aoColumnDefs": [
+      {"bVisible": false, "aTargets": [2,3,4]}
+    ]
+});
+$("#menuTable tbody tr").click(function(e) {
+    var aData = oTable.fnGetData(this);
+    if( aData[1] < aData[3] ){
+        var topWindow = $(window.parent.document),
+            iframe_box = topWindow.find("#iframe_box");
+        iframe_box.find(".show_iframe").hide().eq(0).show().find("iframe").attr("src","procedureForm.htm?questionFaceWay=$!{isStartUpInterviewDto.interviewWay}&interviewId=$!{isStartUpInterviewDto.interviewId}&questionId=0&oldQuestionType=0&questionType="+aData[2]);
+        //var titleValue=topWindow.find("#min_title_list").find("li").find("span");
+        //titleValue.html(aData[0]);
+        //titleValue.attr("title",aData[0]);
+    }else{
+    	layer.msg('此类题目已答完',{icon:4,time:1000});
+    }
+
+});
+$(function(){
+    /*$("#min_title_list li").contextMenu('Huiadminmenu', {
+        bindings: {
+            'closethis': function(t) {
+                console.log(t);
+                if(t.find("i")){
+                    t.find("i").trigger("click");
+                }       
+            },
+            'closeall': function(t) {
+                alert('Trigger was '+t.id+'\nAction was Email');
+            },
+        }
+    });*/
+});
+
+function getTableContent(primaryKey,j){
+    var nTrs = oTable.fnGetNodes();//fnGetNodes获取表格所有行，nTrs[i]表示第i行tr对象
+    for(var i = 0; i < nTrs.length; i++){
+        var rowData=oTable.fnGetData(nTrs[i]);
+        if(rowData[j]==primaryKey){
+            return rowData;     
+        }
+    }
+    return null;
+}
+
+function finish(type){
+	window.location.href='interviewReport.htm?interviewId=$!{isStartUpInterviewDto.interviewId}'
+			+'&interviewWay=$!{isStartUpInterviewDto.interviewWay}'
+			+'&interviewType=$!{isStartUpInterviewDto.getInterviewType()}'
+		    +'&questionId=0&type='+type;
+}
+
+function exit(){
+	layer.confirm('确定退出本次面试?', {icon: 3, title:'退出'}, function(index){
+		window.location.href='../../index.htm';
+		  layer.close(index);
+	});
+}
+
+function clickDetail(){
+	layer_show('答题详情','interviewReportSecWindow.htm?interviewId=$!{isStartUpInterviewDto.interviewId}','800','430');
+}
+</script>
+</body>
+</html>

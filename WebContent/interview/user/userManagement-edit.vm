@@ -1,0 +1,219 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="../../static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="../../lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/css/style.css" />
+
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>账户信息 - 面试助手 v1.0</title>
+</head>
+<body>
+<article class="page-container">
+	<form class="form form-horizontal" id="form-userManagement-edit">
+	<input type="hidden" name="addUserId" id="addUserId" value="$!{userIdEdit}">
+	<div class="row cl">
+		<label class="form-label col-xs-2 col-sm-2"><span class="c-red">*</span>账号：</label>
+		<div class="formControls col-xs-4 col-sm-4">
+			<input type="text" class="input-text" autocomplete="off" value="" placeholder="账号" id="addUserAccount" name="addUserAccount">
+		</div>
+	</div>
+	#if(!$userIdEdit)
+	<input type="hidden" name="addUserPassword" id="addUserPassword" value="">
+	<div class="row cl">
+        <label class="form-label col-xs-2 col-sm-2"><span class="c-red">*</span>密码：</label>
+        <div class="formControls col-xs-4 col-sm-4">
+            <input type="password" class="input-text" autocomplete="off" value="" placeholder="密码" id="addUserPassword2" name="addUserPassword2">
+        </div>
+		<label class="form-label col-xs-2 col-sm-2"><span class="c-red">*</span>确认密码：</label>
+		<div class="formControls col-xs-4 col-sm-4">
+			<input type="password" class="input-text" autocomplete="off" value="" placeholder="确认密码" id="addConfirmUserPassword" name="addConfirmUserPassword">
+		</div>
+    </div>
+    #end
+    <div class="row cl">
+        <label class="form-label col-xs-2 col-sm-2"><span class="c-red">*</span>用户类型：</label>
+        <div class="formControls col-xs-4 col-sm-4">
+            <span class="select-box">
+                <select class="select" size="1" name="addUserPower">
+                    <option value="1" selected>面试官</option>
+                    <option value="0">系统管理员</option>
+                </select>
+            </span>
+        </div>
+        <label class="form-label col-xs-2 col-sm-2"><span class="c-red">*</span>用户姓名：</label>
+        <div class="formControls col-xs-4 col-sm-4">
+            <input type="text" autocomplete="off" value="" placeholder="用户姓名" id="addUserName" name="addUserName" class="input-text">
+        </div>
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-2 col-sm-2"><span class="c-red">*</span>联系方式：</label>
+        <div class="formControls col-xs-4 col-sm-4">
+            <input type="text" class="input-text" autocomplete="off" value="" placeholder="联系方式" id="addUserPhone" name="addUserPhone">
+        </div>
+        <label class="form-label col-xs-2 col-sm-2">技术领域：</label>
+        <div class="formControls col-xs-4 col-sm-4">
+            <input type="text" class="input-text" autocomplete="off" value="" placeholder="技术领域" id="addUserTechnology" name="addUserTechnology">
+        </div>
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-2 col-sm-2">部门：</label>
+        <div class="formControls col-xs-4 col-sm-4">
+            <input type="text" class="input-text" autocomplete="off" value="" placeholder="部门" id="addUserDepartment" name="addUserDepartment">
+        </div>
+        <label class="form-label col-xs-2 col-sm-2">技术等级：</label>
+        <div class="formControls col-xs-4 col-sm-4">
+            <span class="select-box">
+                <select class="select" size="1" name="addUserGrade">
+                    <option value="1" selected>E1</option>
+                    <option value="2">E2</option>
+                    <option value="3">E3</option>
+                    <option value="4">E4</option>
+                    <option value="5">E5</option>
+                </select>
+            </span>
+        </div>
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-2 col-sm-2">领导项目：</label>
+        <div class="formControls col-xs-4 col-sm-4">
+            <input type="text" class="input-text" autocomplete="off" value="" placeholder="领导项目" id="addUserProject" name="addUserProject">
+        </div>
+        <label class="form-label col-xs-2 col-sm-2">兴趣爱好：</label>
+        <div class="formControls col-xs-4 col-sm-4">
+            <input type="text" class="input-text" autocomplete="off" value="" placeholder="兴趣爱好" id="addUserHobby" name="addUserHobby">
+        </div>
+    </div>
+	<div class="row cl">
+		<div class="col-xs-6 col-sm-6 col-xs-offset-5 col-sm-offset-5">
+			<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+		</div>
+	</div>
+	</form>
+</article>
+
+<!--_footer 作为公共模版分离出去--> 
+<script type="text/javascript" src="../../lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="../../lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="../../static/h-ui/js/H-ui.min.js"></script> 
+<script type="text/javascript" src="../../static/h-ui.admin/js/H-ui.admin.js"></script>
+<!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="../../lib/jquery.validation/1.14.0/jquery.validate.js"></script> 
+<script type="text/javascript" src="../../lib/jquery.validation/1.14.0/validate-methods.js"></script> 
+<script type="text/javascript" src="../../lib/jquery.validation/1.14.0/messages_zh.js"></script> 
+<script type="text/javascript" src="../../lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="../../static/login/js/md5-min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	
+	$("#form-userManagement-edit").validate({
+		rules:{
+			addUserAccount:{
+				required:true,
+				userAccountCheck:true
+			},
+			addUserPassword2:{
+				required:true,
+				passwordCheck:true
+			},
+			addConfirmUserPassword:{
+				required:true,
+				passwordCheck:true,
+				equalTo: "#addUserPassword2"
+			},
+			addUserPower:{
+				required:true
+			},
+			addUserName:{
+				required:true
+			},
+			addUserPhone:{
+                required:true
+            }
+		},
+		onkeyup:false,
+		focusCleanup:true,
+		success:"valid",
+		submitHandler:function(form){
+			var submitUrl = "addAccounts.json";
+            if("$!{userIdEdit}"!=""){
+                submitUrl = "editAccounts.json";
+            }else{
+                var addUserPassword = $("input[id='addUserPassword2']").val();
+                $("input[id='addUserPassword']").val(hex_md5(addUserPassword));
+            }
+			$(form).ajaxSubmit({
+                type: 'post',
+                url: submitUrl ,
+                success: function(data){
+                	if(data.code!="1"){
+                		layer.msg(data.codeDes,{icon:5,time:1000});
+                	}else{
+                	    layer.msg('success!',{icon:6});
+                	    parent.location.replace('userManagement.htm?pageNo=1&pageSize=100');
+                	}
+                },
+                error: function(XmlHttpRequest, textStatus, errorThrown){
+                	parent.layer.msg('error!',{icon:5});
+                }
+            });
+        }
+	});
+		
+	if("$!{userIdEdit}"!=""){
+		var data=parent.getTableContent("$!{userIdEdit}",1);
+		$("input[id='addUserAccount']").val(data[2]);
+		$("input[id='addUserAccount']").css("border","none").prop("readonly",true);
+		$("select[name='addUserPower']").val(data[11]);
+		$("input[id='addUserName']").val(data[4]);
+		$("input[id='addUserPhone']").val(data[5]);
+		$("input[id='addUserTechnology']").val(data[6]);
+		$("input[id='addUserDepartment']").val(data[7]);
+		$("select[name='addUserGrade']").val(data[12]);
+		$("input[id='addUserProject']").val(data[9]);
+		$("input[id='addUserHobby']").val(data[10]);
+	}
+});
+
+$.validator.addMethod("passwordCheck", function(s) {
+    var patrn=/^(\w){6,20}$/;   
+    if (!patrn.exec(s)){
+        return false;
+    }else{
+        return true;
+    }
+}, '只能输入6-20个字母、数字、下划线');
+
+$.validator.addMethod("userAccountCheck", function(s) {
+    var patrn=/^[a-zA-Z]{1}([a-zA-Z0-9]|[._]){4,19}$/;   
+    if (!patrn.exec(s)) {
+        return false;
+    }else{
+        return true ;
+    }
+}, '请输入以字母开头，5~20位用户名');
+</script> 
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

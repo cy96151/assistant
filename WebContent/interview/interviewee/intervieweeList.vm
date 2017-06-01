@@ -1,0 +1,266 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="../../static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="../../lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>面试人管理</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 面试管理<span class="c-gray en">&gt;</span> 面试人管理 <a class="btn btn-success radius r btn-refresh" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.pathname+'?PageNo=1&PageSize=100');" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+	<div class="text-c"> 面试状态：
+		<span class="select-box inline">
+        <select name="intervieweeStatus" class="select">
+            <option value="0">全部</option>
+            <option value="1">无</option>
+            <option value="2">正在面试</option>
+            <option value="3">归档</option>
+            <option value="4">待面试</option>
+        </select>
+        </span>
+		<input type="text" name="searchName" id="searchName" placeholder=" 姓名 或 手机号" style="width:250px" class="input-text" value="$!{searchName}">
+		<button name="" id="" class="btn btn-success" type="submit" onclick="submit()"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+		<button name="" id="" class="btn btn-primary" type="submit" onclick="reset()"><i class="Hui-iconfont">&#xe72a;</i> 重置</button>
+	</div>
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> 
+	   <span class="l">
+	       <a href="javascript:;" onclick="interviewee_add()" class="btn btn-primary radius">
+	           <i class="Hui-iconfont">&#xe600;</i> 新增</a> 
+	       <a class="btn btn-danger radius" onclick="interviewee_edit()" href="javascript:;">
+	           <i class="Hui-iconfont">&#xe6df;</i> 修改</a>
+	       <a class="btn btn-secondary radius" onclick="interviewee_del()" href="javascript:;">
+               <i class="Hui-iconfont">&#xe6e2;</i> 删除</a>
+           <a class="btn btn-warning radius" onclick="interviewee_file()" href="javascript:;">
+               <i class="Hui-iconfont">&#xe634;</i> 归档</a>
+           <a class="btn btn-success radius" onclick="interviewee_addmsg()" href="javascript:;">
+               <i class="Hui-iconfont">&#xe607;</i> 添加面试官</a>
+	   </span> 
+	   <span class="r">共有数据：<strong>$!{total}</strong> 条</span> 
+	</div>
+	<div class="mt-20">
+		<table class="table table-border table-bordered table-bg table-hover table-sort" id="gridtable">
+			<thead>
+				<tr class="text-c">
+					<th><input name="" type="checkbox" value=""></th>
+					<th>序号</th>
+					<th>面试状态</th>
+					<th>面试次数</th>
+					<th>最后一次面试时间</th>
+					<th>面试官</th>
+					<th>姓名</th>
+					<th>性别</th>
+					<th>手机号</th>
+					<th>毕业院校</th>
+					<th>毕业时间</th>
+					<th>岗位</th>
+					<th>项目组</th>
+					<th>面试途径</th>
+					<th>面试官ID</th>
+					<th>专业特长</th>
+					<th>面试编号</th>
+					<th>面试途径value</th>
+				</tr>
+			</thead>
+			<tbody>
+			#foreach( $row in $rows )
+				<tr class="text-c">
+					<td><input name="table_checkbox" id="checkbox_$!{row.getIntervieweeId()}" type="checkbox" value="$!{row.getIntervieweeId()}"></td>
+					<td>$!{row.getIntervieweeId()}</td>
+					<td class="td-status"><span class="label label-success radius">$!{row.getIntervieweeStatus1()}</span><input id="status_$!{row.getIntervieweeId()}" type="hidden" value="$!{row.getIntervieweeStatus()}"/></td>
+					<td><a href='javascript:interviDetailShow($!{row.getIntervieweeId()},$!{row.getIntervieweeNum()})' ><font color=blue>$!{row.getIntervieweeNum()}</a></td>
+					<td>$!dateUtil.format('yyyy-MM-dd',$!row.getIntervieweeLastTime())</td>
+					<td>$!{row.getUserName()}</td>
+					<td>$!{row.getIntervieweeName()}</td>
+					<td>$!{row.getIntervieweeSex()}</td>
+					<td>$!{row.getIntervieweePhone()}</td>
+					<td>$!{row.getIntervieweeSchool()}</td>
+					<td>$!dateUtil.format('yyyy-MM-dd',$!row.getIntervieweeGraduationTime())</td>
+					<td>$!{row.getIntervieweePost()}</td>
+					<td>$!{row.getIntervieweeProject()}</td>
+					<td>$!{row.getInterviewWay1()}</td>
+					<td>$!{row.getUserId()}</td>
+					<td>$!{row.getIntervieweePecialties()}</td>
+					<td>$!{row.getInterviewId()}</td>
+					<td>$!{row.getInterviewWay()}</td>
+				</tr>
+			#end
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="../../lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="../../lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="../../static/h-ui/js/H-ui.min.js"></script> 
+<script type="text/javascript" src="../../static/h-ui.admin/js/H-ui.admin.js"></script>
+<!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="../../lib/My97DatePicker/4.8/WdatePicker.js"></script> 
+<script type="text/javascript" src="../../lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
+<script type="text/javascript" src="../../lib/laypage/1.2/laypage.js"></script>
+<script type="text/javascript">
+oTable = $('.table-sort').dataTable({
+	"aaSorting": [[ 1, "desc" ]],//默认第几个排序
+	"bStateSave": true,//状态保存
+	"aoColumnDefs": [
+	  {"bVisible": false, "aTargets": [14,15,16,17]}, //控制列的隐藏显示
+	  {"orderable":false,"aTargets":[0,8]}// 制定列不参与排序
+	]
+});
+
+$("select[name='intervieweeStatus']").val($!{intervieweeStatus});
+
+$("#gridtable tbody tr").click(function(e) {
+    if ($(this).hasClass('row_selected')) {
+        $(this).removeClass('row_selected');
+        var aData = oTable.fnGetData(this);
+        if (null != aData) {
+            $("input[id='checkbox_"+aData[1]+"']").prop("checked",false);
+        }
+    } else {
+        $(this).addClass('row_selected');
+        var aData = oTable.fnGetData(this);
+        if (null != aData) {
+            $("input[id='checkbox_"+aData[1]+"']").prop("checked",true);
+        }
+    }
+});
+
+$("#gridtable tbody tr").dblclick(function() {
+    var aData = oTable.fnGetData(this);
+    if (null != aData) {
+    	layer_show('面试人信息','interviewee-edit.htm?intervieweeId='+aData[1],'700','380');
+    }
+});
+
+function submit(){
+	var searchName=$("input[name='searchName']").val();
+	var intervieweeStatus=$("select[name='intervieweeStatus']").val();
+	location.replace(location.pathname+'?PageNo=1&PageSize=100&searchName='+searchName+'&intervieweeStatus='+intervieweeStatus);
+}
+
+function reset(){
+	$("input[name='searchName']").val("");
+    $("select[name='intervieweeStatus']").val(0);
+}
+
+function interviewee_add(){
+	layer_show('面试人信息','interviewee-edit.htm','700','380');
+}
+
+function interviewee_edit(){
+	var checkRows = $("input[name='table_checkbox']:checked");
+    if(checkRows.length==1){
+        var intervieweeId=checkRows.val();
+        layer_show('面试人信息','interviewee-edit.htm?intervieweeId='+intervieweeId,'700','380');
+    }else{
+        layer.msg("请选择一条信息", {icon: 5,time: 1000});
+    }
+}
+
+function interviewee_del(){
+	var checkRows = $("input[name='table_checkbox']:checked");
+	if(checkRows.length==1){
+		var intervieweeId=checkRows.val();
+		layer.confirm('确认删除面试人信息?', {icon: 3, title:'确认删除'}, function(index){
+			  layer.close(index);
+			  $.post("delIntervieweeList.json",{"id":intervieweeId},function(result){
+				  if(result.code=="1"){
+					  layer.msg('success!',{icon:6});
+	                  location.replace('intervieweeList.htm?PageNo=1&PageSize=100');
+				  }else{
+					  layer.alert(result.codeDes, {icon: 5});
+					  return;
+				  }
+			  },"json");
+		});
+	}else{
+		layer.msg("请选择一条信息", {icon: 5,time: 1000});
+	}
+}
+
+function interviewee_file(){
+    var checkRows = $("input[name='table_checkbox']:checked");
+    if(checkRows.length==1){
+        var intervieweeId=checkRows.val();
+        layer.confirm('确认归档?', {icon: 3, title:'确认归档'}, function(index){
+              layer.close(index);
+              $.post("stopStatus.json",{"id":intervieweeId},function(result){
+                  if(result.code=="1"){
+                      layer.msg('success!',{icon:6});
+                      location.replace('intervieweeList.htm?PageNo=1&PageSize=100');
+                  }else{
+                      layer.alert(result.codeDes, {icon: 5});
+                      return;
+                  }
+              },"json");
+        });
+    }else{
+        layer.msg("请选择一条信息", {icon: 5,time: 1000});
+    }
+}
+
+function interviewee_addmsg(){
+    var checkRows = $("input[name='table_checkbox']:checked");
+    if(checkRows.length==1){
+        var intervieweeId=checkRows.val();
+        var interviewId=getTableContent(intervieweeId, 1)[16];
+        layer.open({
+            type: 2,
+            area: ['800px','470px'],
+            fix: false, //不固定
+            maxmin: true,
+            shade:0.4,
+            title: '设定面试官',
+            content: '../user/addaccountsMangerList.htm?intervieweeId='+intervieweeId+'&interviewId='+interviewId,
+            btn: '选择',
+            btnAlign: 'c',
+            btn1:function(index,layero){
+                var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
+                iframeWin.addaccountsMangerList_submit();
+            }
+        });
+    }else{
+        layer.msg("请选择一条信息", {icon: 5,time: 1000});
+    }
+}
+
+function interviDetailShow(intervieweeId,num){
+	if(num!=0){
+	    layer_show('面试列表','intervieeDetailShow.htm?intervieweeId='+intervieweeId,'650','400');
+	}else{
+		layer.msg("无面试记录", {icon: 5,time: 1000});
+	}
+}
+
+function getTableContent(primaryKey,j){
+	var nTrs = oTable.fnGetNodes();//fnGetNodes获取表格所有行，nTrs[i]表示第i行tr对象
+	for(var i = 0; i < nTrs.length; i++){
+		var rowData=oTable.fnGetData(nTrs[i]);
+		if(rowData[j]==primaryKey){
+		    return rowData;		
+		}
+	}
+	return null;
+}
+</script>
+</body>
+</html>

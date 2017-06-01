@@ -1,0 +1,179 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="static/login/favicon.png" >
+<link rel="Shortcut Icon" href="static/login/favicon.png" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="../../static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/css/H-ui.admin.procedure.css" />
+<link rel="stylesheet" type="text/css" href="../../lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/skin/blue/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>面试辅助系统</title>
+</head>
+<body>
+<header class="navbar-wrapper">
+    <div class="navbar navbar-fixed-top">
+        <div class="container-fluid cl"> <label class="logo navbar-logo f-l mr-10 hidden-xs">面试辅助系统</label> <label class="logo navbar-logo-m f-l mr-10 visible-xs">面试辅助系统</label> 
+            <span class="logo navbar-slogan f-l mr-10 hidden-xs">v1.0</span> 
+    </div>
+</div>
+</header>
+<section class="Hui-article-box2">
+    <div id="Hui-tabNav" class="Hui-tabNavTop2 hidden-xs">
+    <table class="table mt-25">
+        <tbody>
+            <tr>
+                <th width="16.6%" class="text-r">姓名：</th>
+                <td width="16.6%">$!{intervieweeInfo.getIntervieweeName()}</td>
+                <th width="16.6%" class="text-r">性别：</th>
+                <td width="16.6%">$!{intervieweeInfo.intervieweeSexStr}</td>
+                <th width="16.6%" class="text-r">联系方式：</th>
+                <td width="16.6%">$!{intervieweeInfo.getIntervieweePhone()}</td>
+            </tr>
+            <tr>
+                <th class="text-r">毕业时间：</th>
+                <td>$!dateUtil.format('yyyy-MM-dd',$!intervieweeInfo.getIntervieweeGraduationTime())</td>
+                <th class="text-r">毕业院校：</th>
+                <td>$!{intervieweeInfo.getIntervieweeSchool()}</td>
+                <th class="text-r">应聘岗位：</th>
+                <td>$!{intervieweeInfo.getIntervieweePost()}</td>
+            </tr>
+            <tr>
+                <th class="text-r">面试官：</th>
+                <td>$!{interviewBean.user}</td>
+                <th class="text-r">面试时间：</th>
+                <td>$!{interviewBean.interviewTimeStr}</td>
+                <th class="text-r"></th>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    
+<div id="iframe_box" class="Hui-article2">
+    <article class="page-container">
+        <div class="row cl mt-20">
+            <label class="form-label col-xs-2 col-sm-2 text-r f-16">面试官备注：</label>
+            <div class="formControls col-xs-9 col-sm-9">
+                <textarea class="textarea form-control" rows="3" placeholder="面试官备注" id="businRemark" name="idRemark"></textarea>
+            </div>
+        </div>
+        <div class="row cl mt-20">
+        <div class="col-xs-2 col-sm-2 col-xs-offset-4 col-sm-offset-4">
+            <input class="btn btn-danger radius text-l" type="button" onclick="takeBack()" value="&nbsp;&nbsp;继续面试&nbsp;&nbsp;">
+        </div>
+        <div class="col-xs-2 col-sm-2">
+            <input class="btn btn-success radius text-r" type="button" onclick="confirmSubmit()" value="&nbsp;&nbsp;结束面试&nbsp;&nbsp;">
+        </div>
+        </div>
+        <div class="line mt-20"></div>
+        <div class="row cl">
+            <div class="col-xs-10 col-sm-10 col-xs-offset-1 col-sm-offset-1">
+                <div class="cl pd-5 bg-1 bk-gray  mt-20 mb-20"> 
+                    <span class="l f-16">
+                        <i class="Hui-iconfont">&#xe720;</i> <strong>答题记录</strong>
+                    </span> 
+                </div>
+                <table class="table table-border table-bordered table-bg table-hover table-sort" id="gridtable">
+                    <thead>
+                        <tr class="text-c">
+                            <th>题目标题</th>
+                            <th></th>
+                            <th>题目类型</th>
+                            <th>掌握情况(备注)</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        #foreach( $row in $interviewreportDtpsList )
+                            <tr class="text-c">
+                                <td><a href='javascript:questionDetailshow($!{row.interviewReportId})' ><font color=blue>$!{row.questionTopic}</a></td>
+                                <td>$!{row.interviewReportId}</td>
+                                <td>$!{row.questionType}</td>
+                                <td>$!{row.idUnderstandingAndEva}</td>
+                                <td>$!{row.questionQuestion}</td>
+                                <td>$!{row.questionAnswers}</td>
+                            </tr>
+                        #end
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </article>
+</div>
+</section>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="../../lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="../../lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="../../static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="../../static/h-ui.admin/js/H-ui.admin.procedure.js"></script> <!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="../../lib/jquery.contextmenu/jquery.contextmenu.r2.js"></script>
+<script type="text/javascript" src="../../lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+oTable = $('.table-sort').dataTable({
+    "aLengthMenu" : [5],
+    "iDisplayLength" : 5,
+    "bSort" : false,
+    "bStateSave": true,//状态保存
+    "aoColumnDefs": [
+        {"bVisible": false, "aTargets": [1,4,5]} //控制列的隐藏显示
+     ]
+});
+$("#gridtable tbody tr").dblclick(function() {
+    var aData = oTable.fnGetData(this);
+    if (null != aData) {
+        layer_show('问题详情','../question/questionManagement-show.htm?questionId='+aData[5],'800','350');
+    }
+});
+function takeBack(){
+    if("$!{type}"=="-1"){
+        layer.msg('所有题目已答完',{icon:4,time:2000});
+    }else{
+        window.location.href='procedure.htm?interviewId='+$!{interviewId}
+        +'&interviewWay='+$!{interviewWay}+'&interviewType='+$!{interviewType}
+        +'&questionId=0&type=0';
+    }
+}
+function confirmSubmit(){
+    var data={interviewId:"$!{interviewId}",businRemark:$("textarea[id='businRemark']").val()};
+    $ .post("getNextInterview.json",data,function(data){
+        if(data.code=="1"){
+            window.location.href="../../index.htm";
+        }else{
+            layer.msg(data.codeDes,{icon:5,time:2000});     
+        }
+    },"json");
+}
+function questionDetailshow(id){
+    layer_show('问题详情','../question/questionManagement-show.htm?no1=4&no2=5&questionId='+id,'800','350');
+}
+function getTableContent(primaryKey,j){
+    var nTrs = oTable.fnGetNodes();//fnGetNodes获取表格所有行，nTrs[i]表示第i行tr对象
+    for(var i = 0; i < nTrs.length; i++){
+        var rowData=oTable.fnGetData(nTrs[i]);
+        if(rowData[j]==primaryKey){
+            return rowData;     
+        }
+    }
+    return null;
+}
+</script>
+</body>
+</html>
