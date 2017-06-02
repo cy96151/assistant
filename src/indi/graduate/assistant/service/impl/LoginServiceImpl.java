@@ -56,7 +56,7 @@ public class LoginServiceImpl implements LoginService {
 		for (UserBean userBean : userBeanList) {
 			if ((user.getPassWord()).equals(userBean.getUserPassword())) {
 				setSession(httpSession, userBean, request);
-				if(user.isOnline()){
+				if (user.isOnline()) {
 					Cookie cookie = new Cookie("INTERVIEW", userBean.getUserId());
 					cookie.setMaxAge(60 * 60 * 24 * 7);
 					response.addCookie(cookie);

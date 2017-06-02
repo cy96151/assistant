@@ -38,8 +38,7 @@ public class IntervieweeServiceImpl implements IntervieweeService {
 			else
 				mm.put("intervieweeName", interviewSearchDto.getSearchName().trim());
 		}
-		if (interviewSearchDto.getIntervieweeStatus() == 1 || interviewSearchDto.getIntervieweeStatus() == 2
-				|| interviewSearchDto.getIntervieweeStatus() == 3 || interviewSearchDto.getIntervieweeStatus() == 4)
+		if (interviewSearchDto.getIntervieweeStatus() == 1 || interviewSearchDto.getIntervieweeStatus() == 2 || interviewSearchDto.getIntervieweeStatus() == 3 || interviewSearchDto.getIntervieweeStatus() == 4)
 			mm.put("intervieweeStatus", interviewSearchDto.getIntervieweeStatus());
 		List<IntervieweeDto> result = null;
 		int rowCount = 0;
@@ -64,12 +63,12 @@ public class IntervieweeServiceImpl implements IntervieweeService {
 		InterviewBean interviewBean = new InterviewBean();
 		IntervieweeBean intervieweeBean = new IntervieweeBean();
 		intervieweeBean.setIntervieweeName(addIntervieweeList.getIntervieweeName().trim());
-		if(StringUtils.isNotBlank(addIntervieweeList.getIntervieweeSex())){
-			intervieweeBean.setIntervieweeSex(Integer.valueOf(addIntervieweeList.getIntervieweeSex()));	
+		if (StringUtils.isNotBlank(addIntervieweeList.getIntervieweeSex())) {
+			intervieweeBean.setIntervieweeSex(Integer.valueOf(addIntervieweeList.getIntervieweeSex()));
 		}
-		if(addIntervieweeList.getUserId() != null && !addIntervieweeList.getUserId().equals("")){
+		if (addIntervieweeList.getUserId() != null && !addIntervieweeList.getUserId().equals("")) {
 			intervieweeBean.setIntervieweeStatus(4);
-		}else{
+		} else {
 			intervieweeBean.setIntervieweeStatus(1);
 		}
 		intervieweeBean.setIntervieweePhone(addIntervieweeList.getIntervieweePhone());
@@ -89,8 +88,8 @@ public class IntervieweeServiceImpl implements IntervieweeService {
 		if (addIntervieweeList.getUserId() != null && !addIntervieweeList.getUserId().equals("")) {
 			interviewBean.setIntervieweeId(intervieweeBeanMapper.selectLastId());
 			interviewBean.setUserId(addIntervieweeList.getUserId());
-			if(StringUtils.isNotBlank(addIntervieweeList.getInterviewWay())){
-				interviewBean.setInterviewWay(Integer.valueOf(addIntervieweeList.getInterviewWay()));		
+			if (StringUtils.isNotBlank(addIntervieweeList.getInterviewWay())) {
+				interviewBean.setInterviewWay(Integer.valueOf(addIntervieweeList.getInterviewWay()));
 			}
 			interviewBean.setInterviewEnd(1);
 			try {
@@ -114,7 +113,7 @@ public class IntervieweeServiceImpl implements IntervieweeService {
 		IntervieweeBean intervieweeBean = new IntervieweeBean();
 		intervieweeBean.setIntervieweeId(Integer.valueOf(addIntervieweeList.getIntervieweeId()));
 		intervieweeBean.setIntervieweeName(addIntervieweeList.getIntervieweeName().trim());
-		if(StringUtils.isNotBlank(addIntervieweeList.getIntervieweeSex())){
+		if (StringUtils.isNotBlank(addIntervieweeList.getIntervieweeSex())) {
 			intervieweeBean.setIntervieweeSex(Integer.valueOf(addIntervieweeList.getIntervieweeSex()));
 		}
 		intervieweeBean.setIntervieweePhone(addIntervieweeList.getIntervieweePhone());
@@ -123,9 +122,9 @@ public class IntervieweeServiceImpl implements IntervieweeService {
 		intervieweeBean.setIntervieweePecialties(addIntervieweeList.getIntervieweePecialties().trim());
 		intervieweeBean.setIntervieweePost(addIntervieweeList.getIntervieweePost().trim());
 		intervieweeBean.setIntervieweeProject(addIntervieweeList.getIntervieweeProject().trim());
-		if(addIntervieweeList.getUserId() != null && !addIntervieweeList.getUserId().equals("")){
+		if (addIntervieweeList.getUserId() != null && !addIntervieweeList.getUserId().equals("")) {
 			intervieweeBean.setIntervieweeStatus(4);
-		}else{
+		} else {
 			intervieweeBean.setIntervieweeStatus(1);
 		}
 		try {
@@ -139,9 +138,9 @@ public class IntervieweeServiceImpl implements IntervieweeService {
 		if (addIntervieweeList.getUserId() != null && !addIntervieweeList.getUserId().equals("")) {
 			interviewBean.setIntervieweeId(Integer.valueOf(addIntervieweeList.getIntervieweeId()));
 			interviewBean.setUserId(addIntervieweeList.getUserId());
-			if(StringUtils.isNotBlank(addIntervieweeList.getInterviewWay())){
+			if (StringUtils.isNotBlank(addIntervieweeList.getInterviewWay())) {
 				interviewBean.setInterviewWay(Integer.valueOf(addIntervieweeList.getInterviewWay()));
-			}else{
+			} else {
 				interviewBean.setInterviewWay(null);
 			}
 			interviewBean.setInterviewEnd(1);
@@ -191,15 +190,15 @@ public class IntervieweeServiceImpl implements IntervieweeService {
 	public Map<String, Object> stopStatus(String id) {
 		IntervieweeBean intervieweeBean = null;
 		Map<String, Object> map = new HashMap<>();
-		try{
+		try {
 			intervieweeBean = intervieweeBeanMapper.selectByPrimaryKey(Integer.valueOf(id));
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 			map.put("code", "2");
 			map.put("codeDes", "无法归档!");
 			return map;
 		}
-		if(intervieweeBean.getIntervieweeStatus()==2){
+		if (intervieweeBean.getIntervieweeStatus() == 2) {
 			map.put("code", "2");
 			map.put("codeDes", "正在面试人员无法归档!");
 			return map;
@@ -254,53 +253,53 @@ public class IntervieweeServiceImpl implements IntervieweeService {
 		map.put("codeDes", "添加成功!");
 		return map;
 	}
-	
-	/**判断是否输入为空**/
-	public Map<String, Object> isEmpty(AddIntervieweeListDto addIntervieweeList){
-		
-		if (addIntervieweeList.getIntervieweeName() == null||addIntervieweeList.getIntervieweeName().trim().equals("")){
+
+	/** 判断是否输入为空 **/
+	public Map<String, Object> isEmpty(AddIntervieweeListDto addIntervieweeList) {
+
+		if (addIntervieweeList.getIntervieweeName() == null || addIntervieweeList.getIntervieweeName().trim().equals("")) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("code", "2");
 			map.put("codeDes", "姓名不能为空！");
 			return map;
-		} 	
-		if(!RegexCheck.regexCheck(addIntervieweeList.getIntervieweeName(),RegexCheck.userNameCheck)){
+		}
+		if (!RegexCheck.regexCheck(addIntervieweeList.getIntervieweeName(), RegexCheck.userNameCheck)) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("code", "2");
 			map.put("codeDes", "请输入中文姓名！");
 			return map;
 		}
-		if (addIntervieweeList.getIntervieweePhone() == null||addIntervieweeList.getIntervieweePhone().trim().equals("")){
+		if (addIntervieweeList.getIntervieweePhone() == null || addIntervieweeList.getIntervieweePhone().trim().equals("")) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("code", "2");
 			map.put("codeDes", "手机号不能为空！");
 			return map;
 		}
-		if (addIntervieweeList.getIntervieweeSchool() == null||addIntervieweeList.getIntervieweeSchool().trim().equals("")){
+		if (addIntervieweeList.getIntervieweeSchool() == null || addIntervieweeList.getIntervieweeSchool().trim().equals("")) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("code", "2");
 			map.put("codeDes", "毕业学校不能为空！");
 			return map;
 		}
-		if(!RegexCheck.regexCheck(addIntervieweeList.getIntervieweeSchool(),RegexCheck.schoolCheck)){
+		if (!RegexCheck.regexCheck(addIntervieweeList.getIntervieweeSchool(), RegexCheck.schoolCheck)) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("code", "2");
 			map.put("codeDes", "请输入中文的毕业院校名称！");
 			return map;
 		}
-		if (addIntervieweeList.getIntervieweeGraduationTime() == null||addIntervieweeList.getIntervieweeGraduationTime().equals("")){
+		if (addIntervieweeList.getIntervieweeGraduationTime() == null || addIntervieweeList.getIntervieweeGraduationTime().equals("")) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("code", "2");
 			map.put("codeDes", "毕业时间不能为空！");
 			return map;
 		}
-		if(!RegexCheck.regexCheck(addIntervieweeList.getIntervieweeGraduationTime(),RegexCheck.dateCheck)){
+		if (!RegexCheck.regexCheck(addIntervieweeList.getIntervieweeGraduationTime(), RegexCheck.dateCheck)) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("code", "2");
 			map.put("codeDes", "毕业时间输入有误！");
 			return map;
 		}
-		if (addIntervieweeList.getIntervieweePost() == null || addIntervieweeList.getIntervieweePost().trim().equals("")){
+		if (addIntervieweeList.getIntervieweePost() == null || addIntervieweeList.getIntervieweePost().trim().equals("")) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("code", "2");
 			map.put("codeDes", "岗位不能为空！");
@@ -308,14 +307,14 @@ public class IntervieweeServiceImpl implements IntervieweeService {
 		}
 		return null;
 	}
-	
-	/**获取面试人面试列表**/
-	public Map<String, Object> intervieeDetailShow(int intervieweeId){
+
+	/** 获取面试人面试列表 **/
+	public Map<String, Object> intervieeDetailShow(int intervieweeId) {
 		Map<String, Object> resultMap = null;
 		List<IsStartUpInterviewDto> result = null;
-		try{
+		try {
 			result = interviewBeanMapper.intervieeDetailList(intervieweeId);
-		}catch(Exception e){
+		} catch (Exception e) {
 			return null;
 		}
 		if (result != null && result.size() > 0) {
@@ -323,6 +322,6 @@ public class IntervieweeServiceImpl implements IntervieweeService {
 			resultMap.put("rows", result);
 			resultMap.put("total", result.size());
 		}
-		return resultMap;	
+		return resultMap;
 	}
 }

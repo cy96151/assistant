@@ -60,11 +60,11 @@ public class InterviewCategoryServiceImpl implements InterviewCategoryService {
 						e.printStackTrace();
 						return null;
 					}
-					if( dictionaryBean!=null){
+					if (dictionaryBean != null) {
 						interviewCategoryQuestionType1 += dictionaryBean.getDictionaryName() + "，";
 					}
 				}
-				interviewCategoryDto.setInterviewCategoryQuestionType1(interviewCategoryQuestionType1.substring(0,interviewCategoryQuestionType1.length()-1));
+				interviewCategoryDto.setInterviewCategoryQuestionType1(interviewCategoryQuestionType1.substring(0, interviewCategoryQuestionType1.length() - 1));
 				list.add(interviewCategoryDto);
 			}
 			if (list.size() > 0 && list != null) {
@@ -76,32 +76,32 @@ public class InterviewCategoryServiceImpl implements InterviewCategoryService {
 		return resultMap;
 	}
 
-	/**修改面试类型**/
-	public Map<String, Object> editInterviewCategory(int interviewCategoryId,String interviewCategoryType,int[] interviewCategoryQuestionType){
-		Map<String, Object> map=new HashMap<>();
-		if(null==interviewCategoryType.trim()||interviewCategoryType.trim().equals("")){
+	/** 修改面试类型 **/
+	public Map<String, Object> editInterviewCategory(int interviewCategoryId, String interviewCategoryType, int[] interviewCategoryQuestionType) {
+		Map<String, Object> map = new HashMap<>();
+		if (null == interviewCategoryType.trim() || interviewCategoryType.trim().equals("")) {
 			map.put("code", "2");
 			map.put("codeDes", "面试类型不能为空!");
 			return map;
 		}
-		if(null==interviewCategoryQuestionType||interviewCategoryQuestionType.length<=0){
+		if (null == interviewCategoryQuestionType || interviewCategoryQuestionType.length <= 0) {
 			map.put("code", "2");
 			map.put("codeDes", "面试题目类型不能为空!");
 			return map;
 		}
-		String s="";
-		for(int i:interviewCategoryQuestionType){
-			s=s+i+",";
+		String s = "";
+		for (int i : interviewCategoryQuestionType) {
+			s = s + i + ",";
 		}
 		InterviewCategoryBean interviewCategoryBean = new InterviewCategoryBean();
 		interviewCategoryBean.setInterviewCategoryId(interviewCategoryId);
 		interviewCategoryBean.setInterviewCategoryType(interviewCategoryType.trim());
 		interviewCategoryBean.setInterviewCategoryQuestionType(s);
-		try{
+		try {
 			interviewCategoryBeanMapper.update(interviewCategoryBean);
 			map.put("code", "1");
 			map.put("codeDes", "修改成功!");
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 			map.put("code", "2");
 			map.put("codeDes", "修改失败!");
@@ -109,9 +109,9 @@ public class InterviewCategoryServiceImpl implements InterviewCategoryService {
 		}
 		return map;
 	}
-	
-	/**删除问题类别**/
-	public Map<String,Object> delInterviewCategory(int id){
+
+	/** 删除问题类别 **/
+	public Map<String, Object> delInterviewCategory(int id) {
 		Map<String, Object> map = new HashMap<>();
 		try {
 			interviewCategoryBeanMapper.deleteByPrimaryKey(Integer.valueOf(id));
@@ -126,27 +126,27 @@ public class InterviewCategoryServiceImpl implements InterviewCategoryService {
 		return map;
 	}
 
-	/**获取面试类型**/
-	public Map<String, Object> getInterviewCategory(){
-		Map<String, Object> map=new HashMap<>();
-		List<InterviewCategoryBean> list1=interviewCategoryBeanMapper.select();
-		List<DynamicCombox> list=new ArrayList<>();
-		for(InterviewCategoryBean dic:list1){
-			DynamicCombox temp=new DynamicCombox();
+	/** 获取面试类型 **/
+	public Map<String, Object> getInterviewCategory() {
+		Map<String, Object> map = new HashMap<>();
+		List<InterviewCategoryBean> list1 = interviewCategoryBeanMapper.select();
+		List<DynamicCombox> list = new ArrayList<>();
+		for (InterviewCategoryBean dic : list1) {
+			DynamicCombox temp = new DynamicCombox();
 			temp.setLabel(String.valueOf(dic.getInterviewCategoryId()));
 			temp.setValue(dic.getInterviewCategoryType());
 			list.add(temp);
 		}
-		map.put("ddd", list	);
+		map.put("ddd", list);
 		return map;
 	}
-	
-	/**获取面试问题类型**/
-	public Map<String, Object> getQuestionCategory(int interviewType,int interviewId){
+
+	/** 获取面试问题类型 **/
+	public Map<String, Object> getQuestionCategory(int interviewType, int interviewId) {
 		InterviewCategoryBean interviewCategoryBean = null;
-		try{
-		interviewCategoryBean=interviewCategoryBeanMapper.selectById(interviewType);
-		}catch(Exception e){
+		try {
+			interviewCategoryBean = interviewCategoryBeanMapper.selectById(interviewType);
+		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
@@ -159,14 +159,14 @@ public class InterviewCategoryServiceImpl implements InterviewCategoryService {
 			mm.put("interviewId", interviewId);
 			mm.put("dictionaryId", dictionaryId[i]);
 			mm.put("questionType", dictionaryId[i]);
-			try{
+			try {
 				dictionaryBean = dictionaryBeanMapper.selectByPrimaryKey(Integer.valueOf(dictionaryId[i]));
 				questionNumDto.setDictionaryId(dictionaryBean.getDictionaryId());
 				questionNumDto.setDictionaryName(dictionaryBean.getDictionaryName());
 				questionNumDto.setNum(interviewCategoryBeanMapper.selectNum(mm));
 				questionNumDto.setTypeSum(questionBeanMapper.selectQuestionNum(mm));
 				list.add(questionNumDto);
-			}catch(Exception e){
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}

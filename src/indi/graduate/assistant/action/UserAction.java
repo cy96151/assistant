@@ -17,12 +17,6 @@ import indi.graduate.assistant.dto.PasswordDto;
 import indi.graduate.assistant.service.UserService;
 import indi.graduate.assistant.util.RegexCheck;
 
-/**
- * 
- * 
- * @author Life
- *
- */
 @Controller
 @RequestMapping("/interview/user")
 public class UserAction {

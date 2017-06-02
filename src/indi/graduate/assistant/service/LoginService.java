@@ -17,6 +17,6 @@ public interface LoginService {
 
 	// 退出
 	public boolean login(HttpSession httpSession, HttpServletResponse response);
-	
+
 	public Map<String, Object> getCount();
 }

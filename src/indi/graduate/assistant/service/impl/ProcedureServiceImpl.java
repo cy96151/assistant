@@ -221,7 +221,7 @@ public class ProcedureServiceImpl implements ProcedureService {
 			map.put("codeDes", "所有题目已答完!");
 			return map;
 		}
-		if(questionDto.getOldQuestionType() != 0){
+		if (questionDto.getOldQuestionType() != 0) {
 			questionDto.setQuestionId(0);
 		}
 		return getQuestion(questionDto.getQuestionFaceWay(), questionDto.getQuestionType(), questionDto.getQuestionId(), questionDto.getInterviewId());
